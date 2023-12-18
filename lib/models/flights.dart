@@ -3,11 +3,11 @@
 class Flight{
   String? company;
   String? price;
-  String? from;
-  String? to;
-  DateTime? departure;
-  DateTime? landing;
+  String? dep;
+  String? arr;
+  DateTime? depTime;
+  DateTime? arrTime;
 
-  Flight({required this.company,required this.price,this.from,this.to, required this.departure, required this.landing});
+  Flight({required this.company,required this.price,this.dep,this.arr, required this.depTime, required this.arrTime});
 
 }
