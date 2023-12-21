@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../components/already_have_an_account_check.dart';
 import '../../../constants.dart';
 import '../../Signup/signup_screen.dart';
+import '../../../login_backend_connect.dart';
 
 class LoginForm extends StatefulWidget {
   const LoginForm({Key? key}) : super(key: key);
@@ -14,6 +15,26 @@ class LoginForm extends StatefulWidget {
 class LoginFormState extends State<LoginForm> {
   bool isObscured = true;
 
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+
+  Future<void> _login() async {
+    final email = _emailController.text;
+    final password = _passwordController.text;
+
+    final bool isAuthenticated = await loginUser(email, password);
+
+    if (isAuthenticated) {
+      // Home screen
+      Navigator.pushReplacementNamed(context, '/home');
+    } else {
+      // Error message
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text('Invalid email or password.'),
+      ));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -24,6 +45,7 @@ class LoginFormState extends State<LoginForm> {
             textInputAction: TextInputAction.next,
             cursorColor: kPrimaryColor,
             onSaved: (email) {},
+            controller: _emailController,
             decoration: const InputDecoration(
               hintText: "Your email",
               prefixIcon: Padding(
@@ -38,6 +60,7 @@ class LoginFormState extends State<LoginForm> {
               textInputAction: TextInputAction.done,
               obscureText: isObscured,
               cursorColor: kPrimaryColor,
+              controller: _passwordController,
               decoration: InputDecoration(
                 hintText: "Your password",
                 prefixIcon: const Padding(
@@ -70,7 +93,7 @@ class LoginFormState extends State<LoginForm> {
           Hero(
             tag: "login_btn",
             child: ElevatedButton(
-              onPressed: () {},
+              onPressed: _login,
               child: Text(
                 "Login".toUpperCase(),
               ),
