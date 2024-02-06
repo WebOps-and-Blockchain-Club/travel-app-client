@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:travel_app_client/Screens/Welcome/welcome_screen.dart';
 import 'package:travel_app_client/constants.dart';
-
+import 'package:travel_app_client/profile.dart';
+import 'viewprofile.dart';
+import 'home.dart';
+import '';
 void main() => runApp(const MyApp());
 
 class MyApp extends StatelessWidget {
@@ -35,7 +38,8 @@ class MyApp extends StatelessWidget {
               borderSide: BorderSide.none,
             ),
           )),
-      home: const WelcomeScreen(),
+      // home: const WelcomeScreen(),
+      home: const viewProfile(),
     );
   }
 }
