@@ -1,5 +1,6 @@
 //viewprofile.dart                                                                                                                             import 'dart:convert';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -45,9 +46,10 @@ class _view_profileState extends State<view_profile> {
     final url=Uri.parse('http://localhost:3000/');
     try {
       final response = await http.get(url, headers: {
-        //"Authorization":
+        HttpHeaders.authorizationHeader: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjUsImlhdCI6MTcwNzIzODI4OSwiZXhwIjoxNzA3MjQxODg5fQ.INyjA6gmz44q8w8Q6VIFnLuH23kbt_BfPUnejmEfrP0",
+        "Content-Type": "application/json",
       });
-
+      print(Text("data loading"));
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
 
