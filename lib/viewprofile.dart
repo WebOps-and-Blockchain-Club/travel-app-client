@@ -7,8 +7,8 @@ import 'package:http/http.dart' as http;
 import 'package:travel_app_client/home.dart';
 import 'package:travel_app_client/profile.dart';
 import 'package:travel_app_client/themes/viewprofiletheme.dart';
-void main() => runApp(const viewProfile());
 
+void main() => runApp(const viewProfile());
 
 class viewProfile extends StatelessWidget {
   const viewProfile({Key? key}) : super(key: key);
@@ -38,21 +38,22 @@ class _view_profileState extends State<view_profile> {
   String address = '';
   String phoneNumber = '';
   @override
-  void initState(){
+  void initState() {
     super.initState();
     fetchData();
   }
-  Future <void> fetchData() async{
-    final url=Uri.parse('http://localhost:3000/');
+
+  Future<void> fetchData() async {
+    final url = Uri.parse('http://localhost:3000/viewprofile');
     try {
       final response = await http.get(url, headers: {
-        HttpHeaders.authorizationHeader: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjUsImlhdCI6MTcwNzIzODI4OSwiZXhwIjoxNzA3MjQxODg5fQ.INyjA6gmz44q8w8Q6VIFnLuH23kbt_BfPUnejmEfrP0",
+        HttpHeaders.authorizationHeader:
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjUsImlhdCI6MTcwNzI4MTIyMywiZXhwIjoxNzA3Mjg0ODIzfQ.QidUl9UeXihXaiF-7X8tfA7pgiqKEE2CXBItoGarEmk",
         "Content-Type": "application/json",
       });
-      print(Text("data loading"));
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
-
+        print(data);
         setState(() {
           name = data['name'];
           email = data['email'];
@@ -71,8 +72,6 @@ class _view_profileState extends State<view_profile> {
       print('Error: $error');
     }
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -121,21 +120,15 @@ class _view_profileState extends State<view_profile> {
                   children: [
                     const Padding(
                         padding: EdgeInsets.fromLTRB(100, 10, 50, 20)),
-                    CustomTextFormField(
-                        label: "Name", entry: name),
-                    CustomTextFormField(
-                        label: "email", entry: email),
+                    CustomTextFormField(label: "Name", entry: name),
+                    CustomTextFormField(label: "email", entry: email),
                     CustomTextFormField(
                         label: "nationality", entry: nationality),
-                    CustomTextFormField(
-                        label: "state", entry: state),
-                    CustomTextFormField(
-                        label: "city", entry: city),
-                    CustomTextFormField(
-                        label: "address", entry: address),
+                    CustomTextFormField(label: "state", entry: state),
+                    CustomTextFormField(label: "city", entry: city),
+                    CustomTextFormField(label: "address", entry: address),
                     CustomTextFormField(
                         label: "phone number", entry: phoneNumber),
-
                   ],
                 ),
               ),
