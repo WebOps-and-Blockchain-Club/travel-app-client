@@ -43,13 +43,14 @@ class _view_profileState extends State<view_profile> {
     fetchData();
   }
 
-  Future<void> fetchData() async {
-    final url = Uri.parse('http://localhost:3000/viewprofile');
+  fetchData() async {
+    final url = Uri.parse('http://10.0.2.2:3000/viewprofile');
+    print('hreeeee');
     try {
       final response = await http.get(url, headers: {
-        HttpHeaders.authorizationHeader:
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjUsImlhdCI6MTcwNzI4MTIyMywiZXhwIjoxNzA3Mjg0ODIzfQ.QidUl9UeXihXaiF-7X8tfA7pgiqKEE2CXBItoGarEmk",
         "Content-Type": "application/json",
+        HttpHeaders.authorizationHeader.toString():
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjUsImlhdCI6MTcwNzc1Nzk0MiwiZXhwIjoxNzA3NzYxNTQyfQ.RgsOEg-LaCOvHVJYQXKHVLK7UFuJi4g76bNtCdHXEd4"
       });
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
