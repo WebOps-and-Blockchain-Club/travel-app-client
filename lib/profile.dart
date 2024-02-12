@@ -35,7 +35,7 @@ class ProfilePage2 extends StatelessWidget {
   TextEditingController passwordController = TextEditingController();
 
   Future<void> saveProfileData() async {
-    final url = Uri.parse("http://localhost:3000/register");
+    final url = Uri.parse("http://10.0.2.2:3000/register");
     // final oneurl =Uri.parse("http://localhost:3000/register");
     print({
       nameController.text,
@@ -44,9 +44,8 @@ class ProfilePage2 extends StatelessWidget {
       cityController.text
     });
     try {
-
       final response = await http.post(
-        headers :{"Content-Type": "application/json"},
+        headers: {"Content-Type": "application/json"},
         url,
         body: json.encode({
           'name': nameController.text,

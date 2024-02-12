@@ -39,7 +39,8 @@ class MyApp extends StatelessWidget {
             ),
           )),
       // home: const WelcomeScreen(),
-      home: const viewProfile(),
+      // home: const viewProfile(),
+      home: const Profile(),
     );
   }
 }

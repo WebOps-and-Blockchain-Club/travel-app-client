@@ -50,7 +50,7 @@ class _view_profileState extends State<view_profile> {
       final response = await http.get(url, headers: {
         "Content-Type": "application/json",
         HttpHeaders.authorizationHeader.toString():
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjUsImlhdCI6MTcwNzc1Nzk0MiwiZXhwIjoxNzA3NzYxNTQyfQ.RgsOEg-LaCOvHVJYQXKHVLK7UFuJi4g76bNtCdHXEd4"
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjUsImlhdCI6MTcwNzc2MDM4Mn0.D_B7ToPIympzW0_DaXWxoSzoPeOBDH0vSMAgxvPePNg"
       });
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
