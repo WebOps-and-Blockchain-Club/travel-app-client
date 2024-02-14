@@ -4,9 +4,12 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:localstorage/localstorage.dart';
 import 'package:travel_app_client/home.dart';
 import 'package:travel_app_client/profile.dart';
 import 'package:travel_app_client/themes/viewprofiletheme.dart';
+
+final storage = LocalStorage('auth');
 
 void main() => runApp(const viewProfile());
 
@@ -50,7 +53,7 @@ class _view_profileState extends State<view_profile> {
       final response = await http.get(url, headers: {
         "Content-Type": "application/json",
         HttpHeaders.authorizationHeader.toString():
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjUsImlhdCI6MTcwNzc2MDM4Mn0.D_B7ToPIympzW0_DaXWxoSzoPeOBDH0vSMAgxvPePNg"
+            await storage.getItem('token')
       });
       if (response.statusCode == 200) {
         final data = json.decode(response.body);

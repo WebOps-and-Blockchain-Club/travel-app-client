@@ -2,9 +2,10 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:localstorage/localstorage.dart';
 import 'home.dart';
 
-void main() => runApp(const Profile());
+final storage = LocalStorage('auth');
 
 class Profile extends StatelessWidget {
   const Profile({Key? key}) : super(key: key);
@@ -55,6 +56,7 @@ class ProfilePage2 extends StatelessWidget {
           'state': stateController.text,
           'email': emailController.text,
           'phone_number': phoneNumberController.text,
+          'dob': selectedDate?.toIso8601String(),
           'password': passwordController.text // Replace with an actual password
         }),
       );
@@ -64,6 +66,8 @@ class ProfilePage2 extends StatelessWidget {
         // Data successfully sent to the backend
         // Handle success accordingly
         print("Data added successfully");
+        final data = jsonDecode(response.body);
+        await storage.setItem('token', data['token']);
       } else {
         // Handle errors if any
         print("Error: ${response.body}");

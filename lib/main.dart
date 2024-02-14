@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:travel_app_client/Screens/Login/login_screen.dart';
 import 'package:travel_app_client/Screens/Welcome/welcome_screen.dart';
 import 'package:travel_app_client/constants.dart';
 import 'package:travel_app_client/profile.dart';
 import 'viewprofile.dart';
 import 'home.dart';
 import '';
+
 void main() => runApp(const MyApp());
 
 class MyApp extends StatelessWidget {
@@ -15,12 +17,17 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Auth',
+      routes: {
+        '/home': (context) => MyAppHome(),
+        '/profile': (context) => viewProfile()
+      },
       theme: ThemeData(
           primaryColor: kPrimaryColor,
           scaffoldBackgroundColor: Colors.white,
           elevatedButtonTheme: ElevatedButtonThemeData(
             style: ElevatedButton.styleFrom(
-              elevation: 0, backgroundColor: kPrimaryColor,
+              elevation: 0,
+              backgroundColor: kPrimaryColor,
               shape: const StadiumBorder(),
               maximumSize: const Size(double.infinity, 56),
               minimumSize: const Size(double.infinity, 56),
@@ -39,8 +46,8 @@ class MyApp extends StatelessWidget {
             ),
           )),
       // home: const WelcomeScreen(),
-      // home: const viewProfile(),
-      home: const Profile(),
+      home: const LoginScreen(),
+      // home: const Profile(),
     );
   }
 }
