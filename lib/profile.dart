@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:localstorage/localstorage.dart';
+import 'package:travel_app_client/viewprofile.dart';
 import 'home.dart';
 
 final storage = LocalStorage('auth');
@@ -37,7 +38,6 @@ class ProfilePage2 extends StatelessWidget {
 
   Future<void> saveProfileData() async {
     final url = Uri.parse("http://10.0.2.2:3000/register");
-    // final oneurl =Uri.parse("http://localhost:3000/register");
     print({
       nameController.text,
       nationalityController.text,
@@ -83,12 +83,13 @@ class ProfilePage2 extends StatelessWidget {
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
-          backgroundColor: const Color.fromRGBO(0, 169, 224, 0.34),
+          backgroundColor: Color.fromRGBO(142, 9, 219, 0.337),
+          foregroundColor: Color.fromARGB(255, 255, 255, 255),
           leading: BackButton(
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => MyAppHome()),
+                MaterialPageRoute(builder: (context) => viewProfile()),
               );
             },
           ),
@@ -115,7 +116,7 @@ class ProfilePage2 extends StatelessWidget {
               padding: EdgeInsets.all(30),
               child: Container(
                 decoration: BoxDecoration(
-                  color: const Color.fromRGBO(0, 169, 224, 0.34),
+                  color: Color.fromRGBO(142, 9, 219, 0.337),
                   borderRadius: BorderRadius.circular(10),
                   shape: BoxShape.rectangle,
                 ),

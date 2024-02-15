@@ -21,7 +21,10 @@ class CustomTextFormField extends StatelessWidget {
             padding: const EdgeInsets.all(10.0),
             child: Container(
               color: Colors.transparent,
-              child: Text(entry),
+              child: Text(
+                entry,
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
             ),
           ),
         ],

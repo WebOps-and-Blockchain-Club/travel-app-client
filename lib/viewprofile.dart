@@ -8,6 +8,7 @@ import 'package:localstorage/localstorage.dart';
 import 'package:travel_app_client/home.dart';
 import 'package:travel_app_client/profile.dart';
 import 'package:travel_app_client/themes/viewprofiletheme.dart';
+import 'profile.dart';
 
 final storage = LocalStorage('auth');
 
@@ -82,12 +83,13 @@ class _view_profileState extends State<view_profile> {
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
-          backgroundColor: const Color.fromRGBO(0, 169, 224, 0.34),
+          backgroundColor: Color.fromRGBO(142, 9, 219, 0.337),
+          foregroundColor: Color.fromARGB(255, 255, 255, 255),
           leading: BackButton(
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => Profile()),
+                MaterialPageRoute(builder: (context) => MyAppHome()),
               );
             },
           ),
@@ -114,7 +116,7 @@ class _view_profileState extends State<view_profile> {
               padding: EdgeInsets.all(30),
               child: Container(
                 decoration: BoxDecoration(
-                  color: const Color.fromRGBO(0, 169, 224, 0.34),
+                  color: Color.fromARGB(255, 199, 156, 228),
                   borderRadius: BorderRadius.circular(10),
                   shape: BoxShape.rectangle,
                 ),
@@ -133,6 +135,18 @@ class _view_profileState extends State<view_profile> {
                     CustomTextFormField(label: "address", entry: address),
                     CustomTextFormField(
                         label: "phone number", entry: phoneNumber),
+                    ElevatedButton(
+                        // onPressed: () {
+                        //   print('pressed');
+                        //   Navigator.pushNamed(context, "/editprofile");
+                        // },
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => Profile()),
+                          );
+                        },
+                        child: Text("Edit Profile")),
                   ],
                 ),
               ),

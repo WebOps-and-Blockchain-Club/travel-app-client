@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:travel_app_client/viewprofile.dart';
 import 'profile.dart';
 import 'airways.dart';
 import 'loading_page.dart';
+import 'package:localstorage/localstorage.dart';
+
+final storage = LocalStorage('auth');
+dynamic nameData = storage.getItem('name');
+Set<String> name = nameData != null ? Set.from([nameData]) : {};
 
 class MyAppHome extends StatefulWidget {
   @override
@@ -27,7 +33,7 @@ class _MyAppHomeState extends State<MyAppHome> {
   Widget build(BuildContext context) {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'Flutter Demo',
+        title: 'Home',
         home: Scaffold(
             bottomNavigationBar: BottomNavigationBar(
               items: [
@@ -46,8 +52,8 @@ class _MyAppHomeState extends State<MyAppHome> {
               ],
             ),
             appBar: AppBar(
-              backgroundColor: Color.fromRGBO(0, 169, 224, 0.34),
-              foregroundColor: Colors.black87,
+              backgroundColor: Color.fromRGBO(142, 9, 219, 0.337),
+              foregroundColor: Color.fromARGB(255, 255, 255, 255),
               title: const Text("Home"),
               leading:
                   IconButton(onPressed: () {}, icon: const Icon(Icons.menu)),
@@ -58,7 +64,7 @@ class _MyAppHomeState extends State<MyAppHome> {
                           context,
                           MaterialPageRoute(
                               builder: (context) =>
-                                  isLoading ? LoadingPage() : Profile()));
+                                  isLoading ? LoadingPage() : viewProfile()));
                     },
                     icon: const Icon(Icons.account_circle))
               ],
@@ -68,13 +74,13 @@ class _MyAppHomeState extends State<MyAppHome> {
             body: SingleChildScrollView(
               child: Container(
                 width: double.infinity,
-                height: double.infinity,
+                // height: double.infinity,
                 decoration: const BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage("image/img.png"),
-                    fit: BoxFit.fill,
-                  ),
-                ),
+                    // image: DecorationImage(
+                    //   image: AssetImage("assets/images/"),
+                    //   fit: BoxFit.fill,
+                    // ),
+                    ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -90,7 +96,7 @@ class _MyAppHomeState extends State<MyAppHome> {
                           child: Padding(
                             padding: const EdgeInsets.all(10.0),
                             child: Text(
-                              "Hello User,What are you looking for?",
+                              "Hello $name,What are you looking for?",
                               style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
@@ -111,7 +117,7 @@ class _MyAppHomeState extends State<MyAppHome> {
                             child: Container(
                                 decoration: BoxDecoration(
                                   shape: BoxShape.rectangle,
-                                  color: Colors.white,
+                                  color: Color.fromARGB(255, 199, 156, 228),
                                   borderRadius: BorderRadius.circular(10),
                                 ),
                                 child: Padding(
@@ -125,29 +131,30 @@ class _MyAppHomeState extends State<MyAppHome> {
                                   ),
                                 ),
                                 width: 150,
-                                height: 60),
+                                height: 75),
                           ),
                           Padding(
                             padding: const EdgeInsets.all(10.0),
                             child: Container(
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.rectangle,
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(10.0),
-                                  child: Text(
-                                    "Cities Visited\n 5",
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold,
-                                    ),
+                              decoration: BoxDecoration(
+                                shape: BoxShape.rectangle,
+                                color: Color.fromARGB(255, 199, 156, 228),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(10.0),
+                                child: Text(
+                                  "Cities Visited\n 5",
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
                                   ),
                                 ),
-                                width: 150,
-                                height: 60),
-                          ),
+                              ),
+                              width: 150,
+                              height: 75,
+                            ),
+                          )
                         ],
                       ),
                     ),
@@ -170,8 +177,8 @@ class _MyAppHomeState extends State<MyAppHome> {
                                             : SecondRoute()));
                               },
                               child: Container(
-                                width: 150,
                                 height: 150,
+                                width: 150,
                                 decoration: BoxDecoration(
                                   color: Colors.white,
                                   borderRadius: BorderRadius.circular(10),
@@ -182,7 +189,8 @@ class _MyAppHomeState extends State<MyAppHome> {
                                     Padding(
                                       padding: const EdgeInsets.all(10.0),
                                       child: Image(
-                                        image: AssetImage("image/img_1.png"),
+                                        image: AssetImage(
+                                            "assets/images/airways.jpg"),
                                         height: 75,
                                         width: 75,
                                       ),
@@ -216,7 +224,8 @@ class _MyAppHomeState extends State<MyAppHome> {
                                     Padding(
                                       padding: const EdgeInsets.all(10.0),
                                       child: Image(
-                                          image: AssetImage("image/img_2.png"),
+                                          image: AssetImage(
+                                              "assets/images/railways.jpg"),
                                           height: 75,
                                           width: 75),
                                     ),
@@ -258,7 +267,8 @@ class _MyAppHomeState extends State<MyAppHome> {
                                     Padding(
                                       padding: const EdgeInsets.all(10.0),
                                       child: Image(
-                                        image: AssetImage("image/img_3.png"),
+                                        image: AssetImage(
+                                            "assets/images/roadways.jpg"),
                                         height: 75,
                                         width: 75,
                                       ),
@@ -292,7 +302,8 @@ class _MyAppHomeState extends State<MyAppHome> {
                                     Padding(
                                       padding: const EdgeInsets.all(10.0),
                                       child: Image(
-                                          image: AssetImage("image/img_4.png"),
+                                          image: AssetImage(
+                                              "assets/images/hotels.jpg"),
                                           height: 75,
                                           width: 75),
                                     ),

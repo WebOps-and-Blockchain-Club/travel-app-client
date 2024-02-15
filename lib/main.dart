@@ -19,7 +19,8 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Auth',
       routes: {
         '/home': (context) => MyAppHome(),
-        '/profile': (context) => viewProfile()
+        '/profile': (context) => viewProfile(),
+        '/editprofile': (context) => Profile()
       },
       theme: ThemeData(
           primaryColor: kPrimaryColor,

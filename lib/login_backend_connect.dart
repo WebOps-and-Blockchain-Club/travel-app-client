@@ -21,6 +21,7 @@ Future<bool> loginUser(String email, String password) async {
     final data = jsonDecode(response.body);
     print(data['token']);
     await storage.setItem('token', data['token']);
+    await storage.setItem('name', data['name']);
     return true;
   } else {
     // Login error
