@@ -7,7 +7,9 @@ import 'package:localstorage/localstorage.dart';
 
 final storage = LocalStorage('auth');
 dynamic nameData = storage.getItem('name');
-Set<String> name = nameData != null ? Set.from([nameData]) : {};
+Set<String> name = nameData is String && nameData.isNotEmpty
+    ? Set<String>.from([nameData])
+    : {};
 
 class MyAppHome extends StatefulWidget {
   @override
@@ -96,7 +98,7 @@ class _MyAppHomeState extends State<MyAppHome> {
                           child: Padding(
                             padding: const EdgeInsets.all(10.0),
                             child: Text(
-                              "Hello $name,What are you looking for?",
+                              "Hello ${name.isNotEmpty ? name.first : 'User'},What are you looking for?",
                               style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
