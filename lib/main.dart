@@ -1,8 +1,24 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:travel_app_client/route.dart';
+import 'package:travel_app_client/trains.dart';
 
 import 'flights.dart';
 
+
+class DevHttpOverrides extends HttpOverrides {
+  @override
+  HttpClient createHttpClient(SecurityContext? context) {
+    return super.createHttpClient(context)..badCertificateCallback = (X509Certificate cert, String host, int port) => true;
+  }
+}
+
 void main() {
+
+  HttpOverrides.global = DevHttpOverrides();
+
+
   runApp(const MyApp());
 }
 
@@ -34,7 +50,14 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.lightBlueAccent),
         useMaterial3: true,
       ),
-      home: const Flights(),
+      // home: const Flights(),
+      // home: RoutePage(),
+      // home: FlightInfoScreen(),
+      // home: const Flights(),
+      // home: FlightCoordinates(),
+      // home: TrainCoordinates(),
+      // home: GetDistance(),
+      home: GetTrains(),
     );
   }
 }

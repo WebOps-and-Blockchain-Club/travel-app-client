@@ -6,6 +6,10 @@ import 'package:travel_app_client/models/flights.dart';
 import 'package:http/http.dart' as http;
 import 'cards/flight-card.dart';
 
+
+List graph = [];
+
+
 class Flights extends StatefulWidget {
   const Flights({Key? key}) : super(key: key);
 
@@ -58,6 +62,8 @@ class _FlightsState extends State<Flights> {
     "airlines" : "",
   };
 
+  Map<String, dynamic> flightData = {};
+
   List<String> classes = [
     'First Class',
     'Business Class',
@@ -80,6 +86,328 @@ class _FlightsState extends State<Flights> {
     dateInput.text = "";
     // fetchBookingData(dep, arr, depDate, arrDate);
     super.initState();
+  }
+
+
+  String extractDate(time) {
+    String dateTimeString = time;
+    DateTime dateTime = DateTime.parse(dateTimeString);
+
+    // Splitting date and time
+    List<String> dateTimeParts = dateTimeString.split(' ');
+
+    // Extracting date
+    String dateString = dateTimeParts[0];
+
+    // Extracting time
+    String timeString = dateTimeParts[1];
+
+    // String dateString = '$year-$month-$day';
+    //
+    // // Convert time to string
+    // String timeString = '$hour:$minute';
+
+
+    return dateString;
+
+    // print('Date: $year-$month-$day');
+    // print('Time: $hour:$minute');
+  }
+
+  String extractTime(time) {
+    String dateTimeString = time;
+    DateTime dateTime = DateTime.parse(dateTimeString);
+
+    // Splitting date and time
+    List<String> dateTimeParts = dateTimeString.split(' ');
+
+    // Extracting date
+    String dateString = dateTimeParts[0];
+
+    // Extracting time
+    String timeString = dateTimeParts[1];
+
+
+    return timeString;
+
+    // print('Date: $year-$month-$day');
+    // print('Time: $hour:$minute');
+  }
+
+
+  Future<String> getAirportCoordinates(airport) async {
+    // final String airport = airportController.text;
+    // final String destination = _destinationController.text;
+    const String apiKey = '0509bbc2-21b1-4fd9-8d18-393015d21bf7'; // Replace with your AviationStack API key
+
+    // if (airport.isEmpty || apiKey == 'YOUR_AVSTACK_API_KEY') {
+    //   // Show an error message if origin, destination, or API key is not provided
+    //   // setState(() {
+    //   //   _flightInfo = {};
+    //   // });
+    //   return;
+    // }
+
+    final String apiUrl =
+        'https://airlabs.co/api/v9/airports?iata_code=$airport&api_key=$apiKey';
+
+    final http.Response response = await http.get(Uri.parse(apiUrl));
+
+    final data = json.decode(response.body);
+
+    // print(data["response"][0]["lat"]);
+
+    if (response.statusCode == 200) {
+      // Parse the response and update the UI
+      final dynamic data = json.decode(response.body);
+
+      return "${data["response"][0]["lat"]},${data["response"][0]["lng"]}";
+
+      // setState(() {
+      //   _flightInfo["lat"] = data["response"][0]["lat"];
+      //   _flightInfo["lng"] = data["response"][0]["lng"];
+      // });
+    } else {
+      // Show an error message if the API request fails
+      // setState(() {
+      //   _flightInfo = {};
+      // });
+      return '';
+    }
+
+
+
+
+
+
+
+  }
+
+
+  Future<String> getDistance(String start, String end) async {
+
+    final response = await http.get(
+      Uri.parse('https://router.project-osrm.org/route/v1/driving/$start;$end?steps=true'),
+      headers: {
+        'User-Agent': 'ID of your APP/service/website/etc. v0.1',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+
+      // print(data["routes"][0]["distance"]);
+
+
+      return "${data["routes"][0]["distance"]}";
+
+
+      // setState(() {
+      //   distance=data["routes"][0]["distance"];
+      // });
+
+      //   if (data.length > 0) {
+      //     final result = data[0];
+      //     setState(() {
+      //       if (point == "start_coordinates"){
+      //         startCoordinates = '${result['lat']}, ${result['lon']}';
+      //       }
+      //       else{
+      //         endCoordinates = '${result['lat']}, ${result['lon']}';
+      //       }
+      //     });
+      //   } else {
+      //     throw Exception('No coordinates found for $place');
+      //   }
+      // } else {
+      //   throw Exception('Failed to load coordinates');
+      // }
+    }
+    else{
+      return '';
+    }
+
+    // try {
+    //   final response = await http.get(
+    //     Uri.parse('https://router.project-osrm.org/route/v1/driving/$start;$end?steps=true'),
+    //     headers: {
+    //       'User-Agent': 'ID of your APP/service/website/etc. v0.1',
+    //     },
+    //   );
+    //
+    //   if (response.statusCode == 200) {
+    //     final data = json.decode(response.body);
+    //
+    //     print(data["routes"][0]["distance"]);
+    //
+    //
+    //     return data["routes"][0]["distance"];
+    //
+    //
+    //     // setState(() {
+    //     //   distance=data["routes"][0]["distance"];
+    //     // });
+    //
+    //     //   if (data.length > 0) {
+    //     //     final result = data[0];
+    //     //     setState(() {
+    //     //       if (point == "start_coordinates"){
+    //     //         startCoordinates = '${result['lat']}, ${result['lon']}';
+    //     //       }
+    //     //       else{
+    //     //         endCoordinates = '${result['lat']}, ${result['lon']}';
+    //     //       }
+    //     //     });
+    //     //   } else {
+    //     //     throw Exception('No coordinates found for $place');
+    //     //   }
+    //     // } else {
+    //     //   throw Exception('Failed to load coordinates');
+    //     // }
+    //   }
+    //   else{
+    //     return '';
+    //   }
+    // } catch (e) {
+    //   // setState(() {
+    //   //   // if (point == "start_coordinates"){
+    //   //   //   startCoordinates = 'Error: $e';
+    //   //   // }
+    //   //   // else{
+    //   //   //   endCoordinates = 'Error: $e';
+    //   //   // }
+    //   // });
+    //   return '';
+    // };
+
+
+  }
+
+
+
+  Future<void> searchFlights(dep, arr, out_date, return_date) async {
+    String apiUrl = 'http://localhost:3000/search_flights';
+
+
+    Map<String, dynamic> requestData = {
+      'departure_id': '$dep',
+      'arrival_id': '$arr',
+      'outbound_date': '$out_date',
+      'return_date': '$return_date',
+    };
+
+    try {
+      final response = await http.post(
+        Uri.parse(apiUrl),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Access-Control-Allow-Origin': '*'
+        },
+        body: jsonEncode(requestData),
+      );
+
+      if (response.statusCode == 200) {
+        // Handle the successful response from the backend
+        print('Response from backend: ${response.body}');
+
+        final data = json.decode(response.body);
+
+
+        // setState(() {
+        //   flightData = data["best_flights"];
+        // });
+
+        for (int i = 0; i < data["best_flights"].length; i++){
+
+          String distance = await getDistance(
+              await getAirportCoordinates(
+                  data["best_flights"][i]["flights"][0]["departure_airport"]["id"]
+              ),
+              await getAirportCoordinates(
+                  data["best_flights"][i]["flights"][0]["arrival_airport"]["id"]
+              )
+          );
+
+          graph.add(
+              {
+
+                'fromId': data["best_flights"][i]["flights"][0]["departure_airport"]["id"],
+                'toId': data["best_flights"][i]["flights"][0]["arrival_airport"]["id"],
+                'departDate': extractDate(data["best_flights"][i]["flights"][0]["departure_airport"]["time"]),
+                'arrivalDate':extractDate(data["best_flights"][i]["flights"][0]["arrival_airport"]["time"]),
+                'returnDate': dateInput.text,
+                'iata': data["best_flights"][i]["flights"][0]["flight_number"],
+                'timeofdeparture':extractTime(data["best_flights"][i]["flights"][0]["departure_airport"]["time"]),
+                'timeofarrival':extractTime(data["best_flights"][i]["flights"][0]["arrival_airport"]["time"]),
+                'distance': distance,
+                'price': data["best_flights"][i]["price"]
+
+              }
+          );
+        };
+
+        for (int i = 0; i < data["other_flights"].length; i++){
+
+          String distance = await getDistance(
+              await getAirportCoordinates(
+                  data["other_flights"][i]["flights"][0]["departure_airport"]["id"]
+              ),
+              await getAirportCoordinates(
+                  data["other_flights"][i]["flights"][0]["arrival_airport"]["id"]
+              )
+          );
+
+          graph.add(
+              {
+
+                'fromId': data["other_flights"][i]["flights"][0]["departure_airport"]["id"],
+                'toId': data["other_flights"][i]["flights"][0]["arrival_airport"]["id"],
+                'departDate': extractDate(data["other_flights"][i]["flights"][0]["departure_airport"]["time"]),
+                'arrivalDate':extractDate(data["other_flights"][i]["flights"][0]["arrival_airport"]["time"]),
+                'returnDate': dateInput.text,
+                'iata': data["other_flights"][i]["flights"][0]["flight_number"],
+                'timeofdeparture':extractTime(data["other_flights"][i]["flights"][0]["departure_airport"]["time"]),
+                'timeofarrival':extractTime(data["other_flights"][i]["flights"][0]["arrival_airport"]["time"]),
+                'distance':distance,
+                'price': data["other_flights"][i]["price"]
+
+
+              }
+          );
+        };
+
+
+
+        print("graph $graph");
+
+
+        sendGraph(graph);
+
+        // print("dep ${data["best_flights"][0]["flights"][0]["departure_airport"]["id"]}");
+        // print("depDate ${data["best_flights"][0]["flights"][0]["departure_airport"]["time"]}");
+        // print("depDate_extracted ${extractDate(data["best_flights"][0]["flights"][0]["departure_airport"]["time"])}");
+        // print("depTime_extracted ${extractTime("${data["best_flights"][0]["flights"][0]["departure_airport"]["time"]}")}");
+        //
+        // print("flight_Number ${data["best_flights"][0]["flights"][0]["flight_number"]}");
+        //
+        //
+        // print("arr ${data["best_flights"][0]["flights"][0]["arrival_airport"]["id"]}");
+        // print("arrDate ${data["best_flights"][0]["flights"][0]["arrival_airport"]["time"]}");
+        // print("arrDate_extracted ${extractDate("${data["best_flights"][0]["flights"][0]["arrival_airport"]["time"]}")}");
+        // print("arrTime_extracted ${extractTime("${data["best_flights"][0]["flights"][0]["arrival_airport"]["time"]}")}");
+        //
+        //
+        //
+        // print("dep2 ${data["other_flights"][0]["flights"][0]["departure_airport"]["id"]}");
+        // print("arr2 ${data["other_flights"][0]["flights"][0]["arrival_airport"]["id"]}");
+        // print("printing ${data["best_flights"][0]}");
+      } else {
+        // Handle errors
+        print('Error: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error sending POST request: $e');
+    }
   }
 
 
@@ -106,7 +434,14 @@ class _FlightsState extends State<Flights> {
 
           // fetchAirportData();
 
+          graph.clear();
+
+          print("dateInput.text ${dateInput.text}");
+          searchFlights(dep, arr, dateInput.text, dateInput.text);
+
           fetchBookingData(dep, arr,dateInput.text,'');
+
+          // sendRequest(dep, arr, dateInput.text, '', '', '', '', '');
 
           // Navigator.push(
           //   context,
@@ -764,6 +1099,12 @@ class _FlightsState extends State<Flights> {
             ],
 
             Expanded(
+              child: Container(
+                width: queryData.size.width*0.8,
+                  child: Center(child: Text("$flightData"))
+              ),
+            ),
+            Expanded(
               child: ListView.builder(
                 itemCount: flightsData.length,
                 itemBuilder: (context, index) {
@@ -788,6 +1129,55 @@ class _FlightsState extends State<Flights> {
 
 
 
+
+
+
+
+
+
+  Future<void> sendGraph(graph) async {
+    String url = 'http://localhost:3000/getroute';
+
+
+
+    Map<String, dynamic> requestBody = {
+      'graph': graph
+    };
+
+    try {
+      final response = await http.post(
+        Uri.parse(url),
+        body: jsonEncode(requestBody),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Access-Control-Allow-Origin': '*'
+        },
+      );
+
+      if (response.statusCode == 200) {
+        print('POST request successful');
+        print('Response: ${response.body}');
+      }
+      else {
+        print('POST request failed with status: ${response.statusCode}');
+        print('Response: ${response.body}');
+      }
+    } catch (e) {
+      print('Error sending POST request: $e');
+    }
+  }
+
+
+
+
+
+
+
+
+
+
+
+
   Future<void> fetchBookingData(dep, arr, depDate, arrDate) async {
     final url = Uri.https('booking-com15.p.rapidapi.com', '/api/v1/flights/searchFlights', {
       'fromId': '$dep.AIRPORT',
@@ -809,12 +1199,12 @@ class _FlightsState extends State<Flights> {
         // print('body: ${response.body}');
         // print(data["data"]["flightOffers"]);
         // print(data["data"]["flightOffers"][0]["segments"][0]);
-        print(data["data"]["flightOffers"][0]["segments"][0]["departureAirport"]["cityName"]);
-        print(data["data"]["flightOffers"][0]["segments"][0]["arrivalAirport"]["cityName"]);
-        print(data["data"]["flightOffers"][0]["segments"][0]["departureTime"]);
-        print(data["data"]["flightOffers"][0]["segments"][0]["arrivalTime"]);
-        print(data["data"]["flightOffers"][0]["segments"][0]["legs"][0]["carriersData"][0]["name"]);
-        print(data["data"]["flightOffers"][0]["priceBreakdown"]["total"]["units"]);
+        // print(data["data"]["flightOffers"][0]["segments"][0]["departureAirport"]["cityName"]);
+        // print(data["data"]["flightOffers"][0]["segments"][0]["arrivalAirport"]["cityName"]);
+        // print(data["data"]["flightOffers"][0]["segments"][0]["departureTime"]);
+        // print(data["data"]["flightOffers"][0]["segments"][0]["arrivalTime"]);
+        // print(data["data"]["flightOffers"][0]["segments"][0]["legs"][0]["carriersData"][0]["name"]);
+        // print(data["data"]["flightOffers"][0]["priceBreakdown"]["total"]["units"]);
         // print(data["data"]["flightOffers"][0]["segments"][0]["legs"][0]);
 
         setState(() {
@@ -833,9 +1223,13 @@ class _FlightsState extends State<Flights> {
 
 
 
+
+
+
+
   Avaition apiService = Avaition('87afb06edeb00b82d2f48951a0570cd5');
 
-// Inside a function, you can make a request
+
   Future<void> fetchData(dep,arr) async {
     final response = await apiService.fetchData(dep,arr);
 
@@ -867,11 +1261,6 @@ class _FlightsState extends State<Flights> {
 
   }
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   fetchBookingData(dep, arr, depDate, arrDate);
-  // }
 }
 
 
