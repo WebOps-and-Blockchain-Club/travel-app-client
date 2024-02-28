@@ -6,7 +6,6 @@ import 'package:http/http.dart' as http;
 import 'package:localstorage/localstorage.dart';
 import 'package:travel_app_client/viewprofile.dart';
 import 'home.dart';
-
 import 'package:http/http.dart' as http;
 
 final storage = LocalStorage('auth');
@@ -141,72 +140,12 @@ class ProfilePage3 extends StatelessWidget {
                               padding: EdgeInsets.fromLTRB(100, 10, 50, 20)),
                           Padding(
                             padding: const EdgeInsets.all(10.0),
-                            child: Row(
-                              children: [
-                                Padding(padding: EdgeInsets.all(30)),
-                                // IconButton(
-                                //     onPressed: () {
-                                //       showDialog(
-                                //           context: context,
-                                //           builder: (BuildContext context) {
-                                //             return AlertDialog(
-                                //               content: const Text(
-                                //                   "Do you want to change your profile..Else Enter Back"),
-                                //               actions: [
-                                //                 TextButton(
-                                //                   child: const Text("Yes"),
-                                //                   onPressed: () {
-                                //                     Navigator.of(context).pop();
-                                //                   },
-                                //                 ),
-                                //               ],
-                                //             );
-                                //           });
-                                //     },
-                                //     icon: const ImageIcon(NetworkImage(
-                                //         "https://clipground.com/images/profile-png-5.png")),
-                                //     iconSize: 60,
-                                //     splashColor: Colors.deepPurple),
-                                // Add your profile image here
-                                // TextButton(
-                                //   onPressed: () {
-                                //     showDialog(
-                                //         context: context,
-                                //         builder: (BuildContext context) {
-                                //           return AlertDialog(
-                                //             content: const Text(
-                                //                 "Do you want to save changes..Else Enter Back"),
-                                //             actions: [
-                                //               TextButton(
-                                //                 child: const Text("Yes"),
-                                //                 onPressed: () {
-                                //                   Navigator.of(context).pop();
-                                //                 },
-                                //               ),
-                                //             ],
-                                //           );
-                                //         });
-                                //   },
-                                //   child: const Text("          SAVE",
-                                //       textAlign: TextAlign.end,
-                                //       style: TextStyle(
-                                //         color: Colors.white,
-                                //         fontSize: 18,
-                                //         fontFamily: 'Inter',
-                                //         fontWeight: FontWeight.w600,
-                                //         height: 0.08,
-                                //         letterSpacing: 2.97,
-                                //       )),
-                                // ),
-                              ],
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(10.0),
                             child: Container(
-                              color: Colors.white,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(15),
+                                color: Colors.white,
+                              ),
                               padding: EdgeInsets.all(1),
-                              height: 50,
                               width: 200,
                               child: TextField(
                                 controller: nameController,
@@ -215,7 +154,8 @@ class ProfilePage3 extends StatelessWidget {
                                     contentPadding: EdgeInsets.all(1)),
                                 clipBehavior: Clip.antiAlias,
                                 style: TextStyle(
-                                    backgroundColor: Colors.white, height: 3),
+                                  backgroundColor: Colors.white,
+                                ),
                               ),
                             ),
                           ),
@@ -223,12 +163,6 @@ class ProfilePage3 extends StatelessWidget {
                             padding: EdgeInsets.all(10.0),
                             child: Text("Date Of Birth"),
                           ),
-                          // GestureDetector(
-                          //   child: new Icon(Icons.calendar_today,size: 50),
-                          //
-                          //   onTap: (){DatePickerDialog(initialDate: new DateTime.now(), firstDate: new DateTime(1900), lastDate:new DateTime(2100),fieldHintText: "Date Of Birth", );},
-                          //
-                          // ),
                           Padding(
                             padding: const EdgeInsets.all(10.0),
                             child: IconButton(
@@ -254,17 +188,18 @@ class ProfilePage3 extends StatelessWidget {
                             padding: EdgeInsets.all(10.0),
                             child: Container(
                               padding: EdgeInsets.all(1),
-                              color: Colors.white,
-                              height: 50,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(15),
+                                color: Colors.white,
+                              ),
+                              // color: Colors.white,
                               width: 200,
-                              //decoration: BoxDecoration(shape: BoxShape.rectangle,borderRadius:BorderRadius.circular(10.0),color: Colors.white),
                               child: TextField(
                                 controller: nationalityController,
                                 decoration: InputDecoration(
                                     hintText: "Nationality",
                                     contentPadding: EdgeInsets.all(1)),
                                 clipBehavior: Clip.antiAlias,
-                                style: TextStyle(height: 3),
                               ),
                             ),
                           ),
@@ -272,8 +207,10 @@ class ProfilePage3 extends StatelessWidget {
                             padding: EdgeInsets.all(10.0),
                             child: Container(
                               padding: EdgeInsets.all(1),
-                              color: Colors.white,
-                              height: 50,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(15),
+                                color: Colors.white,
+                              ),
                               width: 200,
                               child: TextField(
                                 controller: cityController,
@@ -283,8 +220,7 @@ class ProfilePage3 extends StatelessWidget {
                                   // disabledBorder: InputBorder.none
                                 ),
                                 clipBehavior: Clip.antiAlias,
-                                style: TextStyle(
-                                    backgroundColor: Colors.white, height: 3),
+                                style: TextStyle(backgroundColor: Colors.white),
                               ),
                             ),
                           ),
@@ -292,8 +228,10 @@ class ProfilePage3 extends StatelessWidget {
                             padding: const EdgeInsets.all(10.0),
                             child: Container(
                               padding: EdgeInsets.all(1),
-                              color: Colors.white,
-                              height: 50,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(15),
+                                color: Colors.white,
+                              ),
                               width: 250,
                               child: TextField(
                                 controller: addressController,
@@ -301,16 +239,17 @@ class ProfilePage3 extends StatelessWidget {
                                     hintText: "Address",
                                     contentPadding: EdgeInsets.all(1)),
                                 clipBehavior: Clip.antiAlias,
-                                style: TextStyle(
-                                    backgroundColor: Colors.white, height: 3),
+                                style: TextStyle(backgroundColor: Colors.white),
                               ),
                             ),
                           ),
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Container(
-                              color: Colors.white,
-                              height: 50,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(15),
+                                color: Colors.white,
+                              ),
                               width: 150,
                               child: TextField(
                                 controller: stateController,
@@ -319,7 +258,8 @@ class ProfilePage3 extends StatelessWidget {
                                     contentPadding: EdgeInsets.all(1)),
                                 clipBehavior: Clip.antiAlias,
                                 style: TextStyle(
-                                    backgroundColor: Colors.white, height: 3),
+                                  backgroundColor: Colors.white,
+                                ),
                               ),
                             ),
                           ),
@@ -345,8 +285,10 @@ class ProfilePage3 extends StatelessWidget {
                             padding: const EdgeInsets.all(10.0),
                             child: Container(
                               padding: EdgeInsets.all(1),
-                              color: Colors.white,
-                              height: 50,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(15),
+                                color: Colors.white,
+                              ),
                               width: 250,
                               child: TextField(
                                 controller: phoneNumberController,
@@ -354,8 +296,7 @@ class ProfilePage3 extends StatelessWidget {
                                     hintText: "Phone Number",
                                     contentPadding: EdgeInsets.all(1)),
                                 clipBehavior: Clip.antiAlias,
-                                style: TextStyle(
-                                    backgroundColor: Colors.white, height: 3),
+                                style: TextStyle(backgroundColor: Colors.white),
                               ),
                             ),
                           ),
@@ -363,23 +304,32 @@ class ProfilePage3 extends StatelessWidget {
                             padding: const EdgeInsets.all(10.0),
                             child: Container(
                               padding: EdgeInsets.all(1),
-                              color: Colors.white,
-                              height: 50,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(15),
+                                color: Colors.white,
+                              ),
+                              // height: 50,
                               width: 250,
                               child: TextField(
+                                obscureText: true,
                                 controller: passwordController,
                                 decoration: InputDecoration(
                                     hintText: "Enter password for updating",
                                     contentPadding: EdgeInsets.all(1)),
                                 clipBehavior: Clip.antiAlias,
-                                style: TextStyle(
-                                    backgroundColor: Colors.white, height: 3),
+                                style: TextStyle(backgroundColor: Colors.white),
                               ),
                             ),
                           ),
                           ElevatedButton(
                             onPressed: () {
-                              saveProfileData(); // Call function to send data to backend
+                              saveProfileData();
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => MyAppHome()),
+                              );
+                              // Call function to send data to backend
                             },
                             child: Text("SAVE"),
                           ),

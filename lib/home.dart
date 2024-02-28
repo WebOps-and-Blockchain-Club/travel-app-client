@@ -25,9 +25,9 @@ class _MyAppHomeState extends State<MyAppHome> {
       isLoading = true;
     });
     await Future.delayed(
-        Duration(milliseconds: 100)); // Simulate a 2-second loading delay.
+        Duration(seconds: 2)); // Simulate a 2-second loading delay.
     setState(() {
-      isLoading = true;
+      isLoading = false;
     });
   }
 
@@ -40,7 +40,6 @@ class _MyAppHomeState extends State<MyAppHome> {
 
   fetchData() async {
     final url = Uri.parse('http://10.0.2.2:3000/viewprofile');
-    print('hreeeee');
     try {
       final response = await http.get(url, headers: {
         "Content-Type": "application/json",
@@ -126,8 +125,8 @@ class _MyAppHomeState extends State<MyAppHome> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: Container(
+                        padding: const EdgeInsets.all(10),
+                        child: Container(
                           decoration: BoxDecoration(
                             shape: BoxShape.rectangle,
                             color: Colors.white,
@@ -143,9 +142,7 @@ class _MyAppHomeState extends State<MyAppHome> {
                               ),
                             ),
                           ),
-                          width: 300,
-                          height: 40),
-                    ),
+                        )),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Row(
@@ -207,8 +204,8 @@ class _MyAppHomeState extends State<MyAppHome> {
                           Padding(
                             padding: const EdgeInsets.all(10.0),
                             child: GestureDetector(
-                              onTap: () {
-                                simulateLoading();
+                              onTap: () async {
+                                await simulateLoading();
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
