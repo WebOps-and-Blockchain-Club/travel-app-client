@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:localstorage/localstorage.dart';
@@ -27,7 +26,6 @@ class ProfilePage2 extends StatelessWidget {
   ProfilePage2({Key? key});
 
   TextEditingController nameController = TextEditingController();
-  // TextEditingController genderController = TextEditingController();
   TextEditingController nationalityController = TextEditingController();
   TextEditingController cityController = TextEditingController();
   TextEditingController addressController = TextEditingController();

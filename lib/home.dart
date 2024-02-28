@@ -1,15 +1,15 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:travel_app_client/viewprofile.dart';
 import 'profile.dart';
 import 'airways.dart';
 import 'loading_page.dart';
 import 'package:localstorage/localstorage.dart';
+import 'package:http/http.dart' as http;
 
 final storage = LocalStorage('auth');
-dynamic nameData = storage.getItem('name');
-Set<String> name = nameData is String && nameData.isNotEmpty
-    ? Set<String>.from([nameData])
-    : {};
 
 class MyAppHome extends StatefulWidget {
   @override
@@ -20,15 +20,53 @@ class _MyAppHomeState extends State<MyAppHome> {
   bool isLoading = false;
 
   // Simulate a loading delay (you can replace this with your actual loading logic).
-  Future<void> simulateLoading() async {
+  simulateLoading() async {
     setState(() {
       isLoading = true;
     });
     await Future.delayed(
         Duration(milliseconds: 100)); // Simulate a 2-second loading delay.
     setState(() {
-      isLoading = false;
+      isLoading = true;
     });
+  }
+
+  var name = '';
+  @override
+  void initState() {
+    super.initState();
+    fetchData();
+  }
+
+  fetchData() async {
+    final url = Uri.parse('http://10.0.2.2:3000/viewprofile');
+    print('hreeeee');
+    try {
+      final response = await http.get(url, headers: {
+        "Content-Type": "application/json",
+        HttpHeaders.authorizationHeader.toString():
+            await storage.getItem('token')
+      });
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        print(data);
+        setState(() {
+          name = data['name'];
+          // email = data['email'];
+          // nationality = data['nationality'];
+          // state = data['state'];
+          // city = data['city'];
+          // address = data['address'];
+          // phoneNumber = data['phone_number'];
+        });
+      } else {
+        // Handle errors if any
+        print('Error: ${response.body}');
+      }
+    } catch (error) {
+      // Handle general errors
+      print('Error: $error');
+    }
   }
 
   @override
@@ -98,7 +136,7 @@ class _MyAppHomeState extends State<MyAppHome> {
                           child: Padding(
                             padding: const EdgeInsets.all(10.0),
                             child: Text(
-                              "Hello ${name.isNotEmpty ? name.first : 'User'},What are you looking for?",
+                              "Hello ${name},What are you looking for?",
                               style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -6,32 +7,34 @@ import 'package:localstorage/localstorage.dart';
 import 'package:travel_app_client/viewprofile.dart';
 import 'home.dart';
 
+import 'package:http/http.dart' as http;
+
 final storage = LocalStorage('auth');
 
-class Profile extends StatelessWidget {
-  const Profile({Key? key}) : super(key: key);
+class EditProfile extends StatelessWidget {
+  const EditProfile({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Profile Page',
-      home: ProfilePage2(),
+      home: ProfilePage3(),
     );
   }
 }
 
-class ProfilePage2 extends StatelessWidget {
+class ProfilePage3 extends StatelessWidget {
   DateTime? selectedDate;
 
-  ProfilePage2({Key? key});
+  ProfilePage3({Key? key});
 
   TextEditingController nameController = TextEditingController();
   TextEditingController nationalityController = TextEditingController();
   TextEditingController cityController = TextEditingController();
   TextEditingController addressController = TextEditingController();
   TextEditingController stateController = TextEditingController();
-  TextEditingController emailController = TextEditingController();
+  // TextEditingController emailController = TextEditingController();
   TextEditingController phoneNumberController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
@@ -45,7 +48,11 @@ class ProfilePage2 extends StatelessWidget {
     // });
     try {
       final response = await http.post(
-        headers: {"Content-Type": "application/json"},
+        headers: {
+          "Content-Type": "application/json",
+          HttpHeaders.authorizationHeader.toString():
+              await storage.getItem('token')
+        },
         url,
         body: json.encode({
           'name': nameController.text,
@@ -53,22 +60,24 @@ class ProfilePage2 extends StatelessWidget {
           'city': cityController.text,
           'address': addressController.text,
           'state': stateController.text,
-          'email': emailController.text,
+          // 'email': emailController.text,
           'phone_number': phoneNumberController.text,
           'dob': selectedDate?.toIso8601String(),
-          // 'password': passwordController.text // Replace with an actual password
+          'password': passwordController.text // Replace with an actual password
         }),
       );
 
-      final response1 = await http.get(url);
+      // final response1 = await http.get(url);
       if (response.statusCode == 200) {
         // Data successfully sent to the backend
         // Handle success accordingly
-        print("Data updated successfully");
+        // print("Data updated successfully");
         final data = jsonDecode(response.body);
-        await storage.setItem('token', data['token']);
+        // await storage.setItem('token', data['token']);
+        // await storage.getItem('token');
       } else {
         // Handle errors if any
+        print("Error encountered in editprofile.drt");
         print("Error: ${response.body}");
       }
     } catch (error) {
@@ -92,7 +101,7 @@ class ProfilePage2 extends StatelessWidget {
               );
             },
           ),
-          title: const Text('Profile'),
+          title: const Text('Edit Profile'),
         ),
         bottomNavigationBar: BottomNavigationBar(
           items: const [
@@ -135,60 +144,60 @@ class ProfilePage2 extends StatelessWidget {
                             child: Row(
                               children: [
                                 Padding(padding: EdgeInsets.all(30)),
-                                IconButton(
-                                    onPressed: () {
-                                      showDialog(
-                                          context: context,
-                                          builder: (BuildContext context) {
-                                            return AlertDialog(
-                                              content: const Text(
-                                                  "Do you want to change your profile..Else Enter Back"),
-                                              actions: [
-                                                TextButton(
-                                                  child: const Text("Yes"),
-                                                  onPressed: () {
-                                                    Navigator.of(context).pop();
-                                                  },
-                                                ),
-                                              ],
-                                            );
-                                          });
-                                    },
-                                    icon: const ImageIcon(NetworkImage(
-                                        "https://clipground.com/images/profile-png-5.png")),
-                                    iconSize: 60,
-                                    splashColor: Colors.deepPurple),
+                                // IconButton(
+                                //     onPressed: () {
+                                //       showDialog(
+                                //           context: context,
+                                //           builder: (BuildContext context) {
+                                //             return AlertDialog(
+                                //               content: const Text(
+                                //                   "Do you want to change your profile..Else Enter Back"),
+                                //               actions: [
+                                //                 TextButton(
+                                //                   child: const Text("Yes"),
+                                //                   onPressed: () {
+                                //                     Navigator.of(context).pop();
+                                //                   },
+                                //                 ),
+                                //               ],
+                                //             );
+                                //           });
+                                //     },
+                                //     icon: const ImageIcon(NetworkImage(
+                                //         "https://clipground.com/images/profile-png-5.png")),
+                                //     iconSize: 60,
+                                //     splashColor: Colors.deepPurple),
                                 // Add your profile image here
-                                TextButton(
-                                  onPressed: () {
-                                    showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return AlertDialog(
-                                            content: const Text(
-                                                "Do you want to save changes..Else Enter Back"),
-                                            actions: [
-                                              TextButton(
-                                                child: const Text("Yes"),
-                                                onPressed: () {
-                                                  Navigator.of(context).pop();
-                                                },
-                                              ),
-                                            ],
-                                          );
-                                        });
-                                  },
-                                  child: const Text("          SAVE",
-                                      textAlign: TextAlign.end,
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 18,
-                                        fontFamily: 'Inter',
-                                        fontWeight: FontWeight.w600,
-                                        height: 0.08,
-                                        letterSpacing: 2.97,
-                                      )),
-                                ),
+                                // TextButton(
+                                //   onPressed: () {
+                                //     showDialog(
+                                //         context: context,
+                                //         builder: (BuildContext context) {
+                                //           return AlertDialog(
+                                //             content: const Text(
+                                //                 "Do you want to save changes..Else Enter Back"),
+                                //             actions: [
+                                //               TextButton(
+                                //                 child: const Text("Yes"),
+                                //                 onPressed: () {
+                                //                   Navigator.of(context).pop();
+                                //                 },
+                                //               ),
+                                //             ],
+                                //           );
+                                //         });
+                                //   },
+                                //   child: const Text("          SAVE",
+                                //       textAlign: TextAlign.end,
+                                //       style: TextStyle(
+                                //         color: Colors.white,
+                                //         fontSize: 18,
+                                //         fontFamily: 'Inter',
+                                //         fontWeight: FontWeight.w600,
+                                //         height: 0.08,
+                                //         letterSpacing: 2.97,
+                                //       )),
+                                // ),
                               ],
                             ),
                           ),
@@ -196,6 +205,7 @@ class ProfilePage2 extends StatelessWidget {
                             padding: const EdgeInsets.all(10.0),
                             child: Container(
                               color: Colors.white,
+                              padding: EdgeInsets.all(1),
                               height: 50,
                               width: 200,
                               child: TextField(
@@ -224,12 +234,12 @@ class ProfilePage2 extends StatelessWidget {
                             child: IconButton(
                               onPressed: () async {
                                 DateTime? pickedDate = await showDatePicker(
-                                  context: context,
-                                  initialDate: DateTime.now(),
-                                  firstDate: DateTime(1900),
-                                  lastDate: DateTime.now(),
-                                  fieldHintText: "Date Of Birth",
-                                );
+                                    context: context,
+                                    initialDate: DateTime.now(),
+                                    firstDate: DateTime(1900),
+                                    lastDate: DateTime.now(),
+                                    fieldHintText: "Date Of Birth",
+                                    barrierColor: Colors.purple);
                                 if (pickedDate != null &&
                                     pickedDate != selectedDate) {
                                   // Update the selectedDate variable if a date is picked
@@ -268,9 +278,10 @@ class ProfilePage2 extends StatelessWidget {
                               child: TextField(
                                 controller: cityController,
                                 decoration: InputDecoration(
-                                    hintText: "City",
-                                    contentPadding: EdgeInsets.all(1),
-                                    disabledBorder: InputBorder.none),
+                                  hintText: "City",
+                                  contentPadding: EdgeInsets.all(1),
+                                  // disabledBorder: InputBorder.none
+                                ),
                                 clipBehavior: Clip.antiAlias,
                                 style: TextStyle(
                                     backgroundColor: Colors.white, height: 3),
@@ -312,6 +323,24 @@ class ProfilePage2 extends StatelessWidget {
                               ),
                             ),
                           ),
+                          // Padding(
+                          //   padding: const EdgeInsets.all(10.0),
+                          //   child: Container(
+                          //     padding: EdgeInsets.all(1),
+                          //     color: Colors.white,
+                          //     height: 50,
+                          //     width: 250,
+                          //     child: TextField(
+                          //       controller: emailController,
+                          //       decoration: InputDecoration(
+                          //           hintText: "Email ID",
+                          //           contentPadding: EdgeInsets.all(1)),
+                          //       clipBehavior: Clip.antiAlias,
+                          //       style: TextStyle(
+                          //           backgroundColor: Colors.white, height: 3),
+                          //     ),
+                          //   ),
+                          // ),
                           Padding(
                             padding: const EdgeInsets.all(10.0),
                             child: Container(
@@ -320,9 +349,9 @@ class ProfilePage2 extends StatelessWidget {
                               height: 50,
                               width: 250,
                               child: TextField(
-                                controller: emailController,
+                                controller: phoneNumberController,
                                 decoration: InputDecoration(
-                                    hintText: "Email ID",
+                                    hintText: "Phone Number",
                                     contentPadding: EdgeInsets.all(1)),
                                 clipBehavior: Clip.antiAlias,
                                 style: TextStyle(
@@ -338,9 +367,9 @@ class ProfilePage2 extends StatelessWidget {
                               height: 50,
                               width: 250,
                               child: TextField(
-                                controller: phoneNumberController,
+                                controller: passwordController,
                                 decoration: InputDecoration(
-                                    hintText: "Phone Number",
+                                    hintText: "Enter password for updating",
                                     contentPadding: EdgeInsets.all(1)),
                                 clipBehavior: Clip.antiAlias,
                                 style: TextStyle(

@@ -9,6 +9,7 @@ import 'package:travel_app_client/home.dart';
 import 'package:travel_app_client/profile.dart';
 import 'package:travel_app_client/themes/viewprofiletheme.dart';
 import 'profile.dart';
+import 'editprofile.dart';
 
 final storage = LocalStorage('auth');
 
@@ -143,7 +144,8 @@ class _view_profileState extends State<view_profile> {
                         onPressed: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => Profile()),
+                            MaterialPageRoute(
+                                builder: (context) => EditProfile()),
                           );
                         },
                         child: Text("Edit Profile")),

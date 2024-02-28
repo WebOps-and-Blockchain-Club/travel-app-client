@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:travel_app_client/profile.dart';
 
 import '../../../components/already_have_an_account_check.dart';
 import '../../../constants.dart';
@@ -74,9 +75,7 @@ class LoginFormState extends State<LoginForm> {
                     });
                   },
                   icon: Icon(
-                    isObscured
-                    ? Icons.visibility
-                    : Icons.visibility_off,
+                    isObscured ? Icons.visibility : Icons.visibility_off,
                     color: Theme.of(context).primaryColorDark,
                   ),
                 ),
@@ -106,7 +105,8 @@ class LoginFormState extends State<LoginForm> {
                 context,
                 MaterialPageRoute(
                   builder: (context) {
-                    return const SignUpScreen();
+                    // return const SignUpScreen();
+                    return const Profile();
                   },
                 ),
               );

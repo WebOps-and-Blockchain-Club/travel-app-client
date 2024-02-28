@@ -19,9 +19,12 @@ Future<bool> loginUser(String email, String password) async {
   if (response.statusCode == 200) {
     // Homepage
     final data = jsonDecode(response.body);
-    print(data['token']);
+    // print("printing the token and name");
+    // print(data['token']);
+    print(data);
     await storage.setItem('token', data['token']);
     await storage.setItem('name', data['name']);
+    // await storage.setItem('key', value)
     return true;
   } else {
     // Login error
