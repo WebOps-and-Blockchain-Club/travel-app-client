@@ -85,14 +85,6 @@ class ProfilePage2 extends StatelessWidget {
         appBar: AppBar(
           backgroundColor: Color.fromRGBO(142, 9, 219, 0.337),
           foregroundColor: Color.fromARGB(255, 255, 255, 255),
-          leading: BackButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => viewProfile()),
-              );
-            },
-          ),
           title: const Text('Sign Up !!'),
         ),
         bottomNavigationBar: BottomNavigationBar(
