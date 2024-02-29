@@ -1,19 +1,19 @@
 import 'dart:convert';
-
-import 'package:http/http.dart' as http;
 import 'package:localstorage/localstorage.dart';
+import 'httpService.dart';
 
 final storage = LocalStorage('auth');
 
 Future<bool> loginUser(String email, String password) async {
   print(email);
-  final response = await http.post(
-    Uri.parse('http://10.0.2.2:3000/login'),
-    headers: {"Content-Type": "application/json"},
-    body: jsonEncode({
+  final HttpService httpService = HttpService();
+
+  final response = await httpService.post(
+    'http://10.0.2.2:3000/login',
+    {
       'email': email,
       'password': password,
-    }),
+    },
   );
 
   if (response.statusCode == 200) {
