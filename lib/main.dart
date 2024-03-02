@@ -61,7 +61,8 @@ class MyApp extends StatelessWidget {
       // home: GetDistance(),
       // home: GetTrains(),
       // home: PathOutput(),
-      home: const Search(),
+      // home: const Search(),
+      home: PathOutput(),
     );
   }
 }
