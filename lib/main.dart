@@ -1,13 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:travel_app_client/Screens/Login/login_screen.dart';
 import 'package:travel_app_client/Screens/Welcome/welcome_screen.dart';
+import 'package:travel_app_client/UserProvider.dart';
 import 'package:travel_app_client/constants.dart';
 import 'package:travel_app_client/profile.dart';
 import 'viewprofile.dart';
 import 'home.dart';
 import '';
 
-void main() => runApp(const MyApp());
+// void main() => runApp(const MyApp());
+
+void main() {
+  runApp(MultiProvider(providers: [
+    ChangeNotifierProvider(create: (_) => Userprovider(), lazy: false)
+  ], child: const MyApp()));
+}
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);

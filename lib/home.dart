@@ -1,15 +1,14 @@
 import 'dart:convert';
 import 'dart:io';
-
+import 'httpService.dart';
 import 'package:flutter/material.dart';
 import 'package:travel_app_client/viewprofile.dart';
 import 'profile.dart';
 import 'airways.dart';
 import 'loading_page.dart';
-import 'package:localstorage/localstorage.dart';
-import 'package:http/http.dart' as http;
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-final storage = LocalStorage('auth');
+final FlutterSecureStorage storage = FlutterSecureStorage();
 
 class MyAppHome extends StatefulWidget {
   @override
@@ -18,6 +17,7 @@ class MyAppHome extends StatefulWidget {
 
 class _MyAppHomeState extends State<MyAppHome> {
   bool isLoading = false;
+  final HttpService httpService = HttpService();
 
   // Simulate a loading delay (you can replace this with your actual loading logic).
   simulateLoading() async {
@@ -39,24 +39,19 @@ class _MyAppHomeState extends State<MyAppHome> {
   }
 
   fetchData() async {
-    final url = Uri.parse('http://10.0.2.2:3000/viewprofile');
     try {
-      final response = await http.get(url, headers: {
-        "Content-Type": "application/json",
-        HttpHeaders.authorizationHeader.toString():
-            await storage.getItem('token')
-      });
+      final response = await httpService.getRequest('/viewprofile');
+      print('fetching details in home.dart using viewprofile');
+      //  headers: {
+      //   "Content-Type": "application/json",
+      //   HttpHeaders.authorizationHeader.toString():
+      //       (await storage.read(key: 'token')).toString()
+      // });
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
-        print(data);
+        print('data:$data');
         setState(() {
           name = data['name'];
-          // email = data['email'];
-          // nationality = data['nationality'];
-          // state = data['state'];
-          // city = data['city'];
-          // address = data['address'];
-          // phoneNumber = data['phone_number'];
         });
       } else {
         // Handle errors if any

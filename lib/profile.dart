@@ -1,13 +1,13 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:localstorage/localstorage.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:travel_app_client/Screens/Login/components/login_form.dart';
 import 'package:travel_app_client/Screens/Login/login_screen.dart';
 import 'package:travel_app_client/viewprofile.dart';
 import 'home.dart';
 
-final storage = LocalStorage('auth');
+final FlutterSecureStorage storage = FlutterSecureStorage();
 
 class Profile extends StatelessWidget {
   const Profile({Key? key}) : super(key: key);
@@ -67,7 +67,7 @@ class ProfilePage2 extends StatelessWidget {
         // Handle success accordingly
         print("Data added successfully");
         final data = jsonDecode(response.body);
-        await storage.setItem('token', data['token']);
+        await storage.write(key: 'token', value: data['token']);
       } else {
         // Handle errors if any
         print("Error: ${response.body}");

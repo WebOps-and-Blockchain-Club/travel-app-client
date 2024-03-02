@@ -1,14 +1,15 @@
 import 'dart:convert';
-import 'dart:io';
-
+// import 'dart:html';
+import 'httpService.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'package:localstorage/localstorage.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
 import 'package:travel_app_client/viewprofile.dart';
 import 'home.dart';
-import 'package:http/http.dart' as http;
 
-final storage = LocalStorage('auth');
+final FlutterSecureStorage storage = FlutterSecureStorage();
+
+// final storage = LocalStorage('auth');
 
 class EditProfile extends StatelessWidget {
   const EditProfile({Key? key}) : super(key: key);
@@ -38,33 +39,22 @@ class ProfilePage3 extends StatelessWidget {
   TextEditingController passwordController = TextEditingController();
 
   Future<void> saveProfileData() async {
-    final url = Uri.parse("http://10.0.2.2:3000/update");
-    // print({
-    //   nameController.text,
-    //   nationalityController.text,
-    //   passwordController.text,
-    //   cityController.text
-    // });
+    // String? _token;
+    Map<String, dynamic>? _userDetails;
+    final HttpService httpService = HttpService();
+
     try {
-      final response = await http.post(
-        headers: {
-          "Content-Type": "application/json",
-          HttpHeaders.authorizationHeader.toString():
-              await storage.getItem('token')
-        },
-        url,
-        body: json.encode({
-          'name': nameController.text,
-          'nationality': nationalityController.text,
-          'city': cityController.text,
-          'address': addressController.text,
-          'state': stateController.text,
-          // 'email': emailController.text,
-          'phone_number': phoneNumberController.text,
-          'dob': selectedDate?.toIso8601String(),
-          'password': passwordController.text // Replace with an actual password
-        }),
-      );
+      final response = await httpService.postRequest('/update', {
+        'name': nameController.text,
+        'nationality': nationalityController.text,
+        'city': cityController.text,
+        'address': addressController.text,
+        'state': stateController.text,
+        // 'email': emailController.text,
+        'phone_number': phoneNumberController.text,
+        'dob': selectedDate?.toIso8601String(),
+        'password': passwordController.text // Replace with an actual password
+      });
 
       // final response1 = await http.get(url);
       if (response.statusCode == 200) {

@@ -1,17 +1,18 @@
 //viewprofile.dart                                                                                                                             import 'dart:convert';
 import 'dart:convert';
 import 'dart:io';
-
+import 'httpService.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'package:localstorage/localstorage.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+// import 'package:localstorage/localstorage.dart';
 import 'package:travel_app_client/home.dart';
 import 'package:travel_app_client/profile.dart';
 import 'package:travel_app_client/themes/viewprofiletheme.dart';
 import 'profile.dart';
 import 'editprofile.dart';
 
-final storage = LocalStorage('auth');
+// final storage = LocalStorage('auth');
+final FlutterSecureStorage storage = FlutterSecureStorage();
 
 void main() => runApp(const viewProfile());
 
@@ -35,6 +36,7 @@ class view_profile extends StatefulWidget {
 }
 
 class _view_profileState extends State<view_profile> {
+  final HttpService httpService = HttpService();
   String name = '';
   String email = '';
   String nationality = '';
@@ -49,14 +51,15 @@ class _view_profileState extends State<view_profile> {
   }
 
   fetchData() async {
-    final url = Uri.parse('http://10.0.2.2:3000/viewprofile');
     print('hreeeee');
     try {
-      final response = await http.get(url, headers: {
-        "Content-Type": "application/json",
-        HttpHeaders.authorizationHeader.toString():
-            await storage.getItem('token')
-      });
+      final response = await httpService.getRequest('/viewprofile');
+      print('entered viewprofile');
+      //headers: {
+      //   "Content-Type": "application/json",
+      //   HttpHeaders.authorizationHeader.toString():
+      //       await storage.read(key: 'token').toString()
+      // });
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
         print(data);
