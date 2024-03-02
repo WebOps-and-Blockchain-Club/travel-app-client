@@ -55,13 +55,13 @@ class MyApp extends StatelessWidget {
       // home: const Flights(),
       // home: RoutePage(),
       // home: FlightInfoScreen(),
-      // home: const Flights(),
+      home: const Flights(),
       // home: FlightCoordinates(),
       // home: TrainCoordinates(),
       // home: GetDistance(),
       // home: GetTrains(),
       // home: PathOutput(),
-      home: const Search(),
+      // home: const Search(),
       // home: PathOutput(),
     );
   }

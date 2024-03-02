@@ -1,15 +1,27 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:travel_app_client/info.dart';
-import 'package:travel_app_client/models/flights.dart';
+// import 'package:travel_app_client/info.dart';
+// import 'package:travel_app_client/models/flights.dart';
 import 'package:http/http.dart' as http;
-import 'package:travel_app_client/search.dart';
+// import 'package:travel_app_client/search.dart';
 import 'cards/flight-card.dart';
 
 
 
 
+
+class Flight{
+  String? company;
+  String? price;
+  String? dep;
+  String? arr;
+  DateTime? depTime;
+  DateTime? arrTime;
+
+  Flight({required this.company,required this.price,this.dep,this.arr, required this.depTime, required this.arrTime});
+
+}
 
 class Flights extends StatefulWidget {
   const Flights({Key? key}) : super(key: key);
@@ -286,130 +298,130 @@ class _FlightsState extends State<Flights> {
 
 
 
-  Future<void> searchFlights(dep, arr, out_date, return_date) async {
-    String apiUrl = 'http://localhost:3000/search_flights';
-
-
-    Map<String, dynamic> requestData = {
-      'departure_id': '$dep',
-      'arrival_id': '$arr',
-      'outbound_date': '$out_date',
-      'return_date': '$return_date',
-    };
-
-    try {
-      final response = await http.post(
-        Uri.parse(apiUrl),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-          'Access-Control-Allow-Origin': '*'
-        },
-        body: jsonEncode(requestData),
-      );
-
-      if (response.statusCode == 200) {
-        // Handle the successful response from the backend
-        print('Response from backend: ${response.body}');
-
-        final data = json.decode(response.body);
-
-
-        // setState(() {
-        //   flightData = data["best_flights"];
-        // });
-
-        for (int i = 0; i < data["best_flights"].length; i++){
-
-          String distance = await getAirportDistance(
-              await getAirportCoordinates(
-                  data["best_flights"][i]["flights"][0]["departure_airport"]["id"]
-              ),
-              await getAirportCoordinates(
-                  data["best_flights"][i]["flights"][0]["arrival_airport"]["id"]
-              )
-          );
-
-          graph.add(
-              {
-
-                'fromId': data["best_flights"][i]["flights"][0]["departure_airport"]["id"],
-                'toId': data["best_flights"][i]["flights"][0]["arrival_airport"]["id"],
-                'departDate': extractDate(data["best_flights"][i]["flights"][0]["departure_airport"]["time"]),
-                'arrivalDate':extractDate(data["best_flights"][i]["flights"][0]["arrival_airport"]["time"]),
-                'returnDate': dateInput.text,
-                'iata': data["best_flights"][i]["flights"][0]["flight_number"],
-                'timeofdeparture':extractTime(data["best_flights"][i]["flights"][0]["departure_airport"]["time"]),
-                'timeofarrival':extractTime(data["best_flights"][i]["flights"][0]["arrival_airport"]["time"]),
-                'distance': distance,
-                'price': data["best_flights"][i]["price"]
-
-              }
-          );
-        };
-
-        for (int i = 0; i < data["other_flights"].length; i++){
-
-          String distance = await getAirportDistance(
-              await getAirportCoordinates(
-                  data["other_flights"][i]["flights"][0]["departure_airport"]["id"]
-              ),
-              await getAirportCoordinates(
-                  data["other_flights"][i]["flights"][0]["arrival_airport"]["id"]
-              )
-          );
-
-          graph.add(
-              {
-
-                'fromId': data["other_flights"][i]["flights"][0]["departure_airport"]["id"],
-                'toId': data["other_flights"][i]["flights"][0]["arrival_airport"]["id"],
-                'departDate': extractDate(data["other_flights"][i]["flights"][0]["departure_airport"]["time"]),
-                'arrivalDate':extractDate(data["other_flights"][i]["flights"][0]["arrival_airport"]["time"]),
-                'returnDate': dateInput.text,
-                'iata': data["other_flights"][i]["flights"][0]["flight_number"],
-                'timeofdeparture':extractTime(data["other_flights"][i]["flights"][0]["departure_airport"]["time"]),
-                'timeofarrival':extractTime(data["other_flights"][i]["flights"][0]["arrival_airport"]["time"]),
-                'distance':distance,
-                'price': data["other_flights"][i]["price"]
-
-
-              }
-          );
-        };
-
-
-
-        print("graph $graph");
-
-
-        sendGraph(graph);
-
-        // print("dep ${data["best_flights"][0]["flights"][0]["departure_airport"]["id"]}");
-        // print("depDate ${data["best_flights"][0]["flights"][0]["departure_airport"]["time"]}");
-        // print("depDate_extracted ${extractDate(data["best_flights"][0]["flights"][0]["departure_airport"]["time"])}");
-        // print("depTime_extracted ${extractTime("${data["best_flights"][0]["flights"][0]["departure_airport"]["time"]}")}");
-        //
-        // print("flight_Number ${data["best_flights"][0]["flights"][0]["flight_number"]}");
-        //
-        //
-        // print("arr ${data["best_flights"][0]["flights"][0]["arrival_airport"]["id"]}");
-        // print("arrDate ${data["best_flights"][0]["flights"][0]["arrival_airport"]["time"]}");
-        // print("arrDate_extracted ${extractDate("${data["best_flights"][0]["flights"][0]["arrival_airport"]["time"]}")}");
-        // print("arrTime_extracted ${extractTime("${data["best_flights"][0]["flights"][0]["arrival_airport"]["time"]}")}");
-        //
-        //
-        //
-        // print("dep2 ${data["other_flights"][0]["flights"][0]["departure_airport"]["id"]}");
-        // print("arr2 ${data["other_flights"][0]["flights"][0]["arrival_airport"]["id"]}");
-        // print("printing ${data["best_flights"][0]}");
-      } else {
-        // Handle errors
-        print('Error: ${response.statusCode}');
-      }
-    } catch (e) {
-      print('Error sending POST request: $e');
-    }
-  }
+  // Future<void> searchFlights(dep, arr, out_date, return_date) async {
+  //   String apiUrl = 'http://localhost:3000/search_flights';
+  //
+  //
+  //   Map<String, dynamic> requestData = {
+  //     'departure_id': '$dep',
+  //     'arrival_id': '$arr',
+  //     'outbound_date': '$out_date',
+  //     'return_date': '$return_date',
+  //   };
+  //
+  //   try {
+  //     final response = await http.post(
+  //       Uri.parse(apiUrl),
+  //       headers: <String, String>{
+  //         'Content-Type': 'application/json; charset=UTF-8',
+  //         'Access-Control-Allow-Origin': '*'
+  //       },
+  //       body: jsonEncode(requestData),
+  //     );
+  //
+  //     if (response.statusCode == 200) {
+  //       // Handle the successful response from the backend
+  //       print('Response from backend: ${response.body}');
+  //
+  //       final data = json.decode(response.body);
+  //
+  //
+  //       // setState(() {
+  //       //   flightData = data["best_flights"];
+  //       // });
+  //
+  //       for (int i = 0; i < data["best_flights"].length; i++){
+  //
+  //         String distance = await getAirportDistance(
+  //             await getAirportCoordinates(
+  //                 data["best_flights"][i]["flights"][0]["departure_airport"]["id"]
+  //             ),
+  //             await getAirportCoordinates(
+  //                 data["best_flights"][i]["flights"][0]["arrival_airport"]["id"]
+  //             )
+  //         );
+  //
+  //         graph.add(
+  //             {
+  //
+  //               'fromId': data["best_flights"][i]["flights"][0]["departure_airport"]["id"],
+  //               'toId': data["best_flights"][i]["flights"][0]["arrival_airport"]["id"],
+  //               'departDate': extractDate(data["best_flights"][i]["flights"][0]["departure_airport"]["time"]),
+  //               'arrivalDate':extractDate(data["best_flights"][i]["flights"][0]["arrival_airport"]["time"]),
+  //               'returnDate': dateInput.text,
+  //               'iata': data["best_flights"][i]["flights"][0]["flight_number"],
+  //               'timeofdeparture':extractTime(data["best_flights"][i]["flights"][0]["departure_airport"]["time"]),
+  //               'timeofarrival':extractTime(data["best_flights"][i]["flights"][0]["arrival_airport"]["time"]),
+  //               'distance': distance,
+  //               'price': data["best_flights"][i]["price"]
+  //
+  //             }
+  //         );
+  //       };
+  //
+  //       for (int i = 0; i < data["other_flights"].length; i++){
+  //
+  //         String distance = await getAirportDistance(
+  //             await getAirportCoordinates(
+  //                 data["other_flights"][i]["flights"][0]["departure_airport"]["id"]
+  //             ),
+  //             await getAirportCoordinates(
+  //                 data["other_flights"][i]["flights"][0]["arrival_airport"]["id"]
+  //             )
+  //         );
+  //
+  //         graph.add(
+  //             {
+  //
+  //               'fromId': data["other_flights"][i]["flights"][0]["departure_airport"]["id"],
+  //               'toId': data["other_flights"][i]["flights"][0]["arrival_airport"]["id"],
+  //               'departDate': extractDate(data["other_flights"][i]["flights"][0]["departure_airport"]["time"]),
+  //               'arrivalDate':extractDate(data["other_flights"][i]["flights"][0]["arrival_airport"]["time"]),
+  //               'returnDate': dateInput.text,
+  //               'iata': data["other_flights"][i]["flights"][0]["flight_number"],
+  //               'timeofdeparture':extractTime(data["other_flights"][i]["flights"][0]["departure_airport"]["time"]),
+  //               'timeofarrival':extractTime(data["other_flights"][i]["flights"][0]["arrival_airport"]["time"]),
+  //               'distance':distance,
+  //               'price': data["other_flights"][i]["price"]
+  //
+  //
+  //             }
+  //         );
+  //       };
+  //
+  //
+  //
+  //       print("graph $graph");
+  //
+  //
+  //       sendGraph(graph);
+  //
+  //       // print("dep ${data["best_flights"][0]["flights"][0]["departure_airport"]["id"]}");
+  //       // print("depDate ${data["best_flights"][0]["flights"][0]["departure_airport"]["time"]}");
+  //       // print("depDate_extracted ${extractDate(data["best_flights"][0]["flights"][0]["departure_airport"]["time"])}");
+  //       // print("depTime_extracted ${extractTime("${data["best_flights"][0]["flights"][0]["departure_airport"]["time"]}")}");
+  //       //
+  //       // print("flight_Number ${data["best_flights"][0]["flights"][0]["flight_number"]}");
+  //       //
+  //       //
+  //       // print("arr ${data["best_flights"][0]["flights"][0]["arrival_airport"]["id"]}");
+  //       // print("arrDate ${data["best_flights"][0]["flights"][0]["arrival_airport"]["time"]}");
+  //       // print("arrDate_extracted ${extractDate("${data["best_flights"][0]["flights"][0]["arrival_airport"]["time"]}")}");
+  //       // print("arrTime_extracted ${extractTime("${data["best_flights"][0]["flights"][0]["arrival_airport"]["time"]}")}");
+  //       //
+  //       //
+  //       //
+  //       // print("dep2 ${data["other_flights"][0]["flights"][0]["departure_airport"]["id"]}");
+  //       // print("arr2 ${data["other_flights"][0]["flights"][0]["arrival_airport"]["id"]}");
+  //       // print("printing ${data["best_flights"][0]}");
+  //     } else {
+  //       // Handle errors
+  //       print('Error: ${response.statusCode}');
+  //     }
+  //   } catch (e) {
+  //     print('Error sending POST request: $e');
+  //   }
+  // }
 
 
 
@@ -435,10 +447,10 @@ class _FlightsState extends State<Flights> {
 
           // fetchAirportData();
 
-          graph.clear();
+          // graph.clear();
 
           print("dateInput.text ${dateInput.text}");
-          searchFlights(dep, arr, dateInput.text, dateInput.text);
+          // searchFlights(dep, arr, dateInput.text, dateInput.text);
 
           fetchBookingData(dep, arr,dateInput.text,'');
 
@@ -948,126 +960,126 @@ class _FlightsState extends State<Flights> {
               ),
             ),
             const SizedBox(height: 8),
-            Container(
-              height: 0.09*queryData.size.height,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(18),
-                color: Colors.white,
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(30),
-                          color: Colors.lightBlue[100],
-                        ),
-                        child: const Center(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Expanded(
-                                child: Padding(
-                                  padding: EdgeInsets.all(8.0),
-                                  child: Text(
-                                    "MON, OCT 30",
-                                    style: TextStyle(
-                                      fontFamily: "Poppins-Regular",
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              Text(
-                                "₹ 4,808",
-                                style: TextStyle(
-                                  fontFamily: "Poppins-Regular",
-                                  color: Colors.red
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(30),
-                          color: Colors.lightBlue[100],
-                        ),
-                        child: Center(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              const Expanded(
-                                child: Padding(
-                                  padding: EdgeInsets.all(8.0),
-                                  child: Text(
-                                    "MON, OCT 29",
-                                    style: TextStyle(
-                                      fontFamily: "Poppins-Regular",
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              Text(
-                                "₹ 4,768",
-                                style: TextStyle(
-                                    fontFamily: "Poppins-Regular",
-                                    color: Colors.green[800],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(30),
-                          color: Colors.lightBlue[100],
-                        ),
-                        child: const Center(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Expanded(
-                                child: Padding(
-                                  padding: EdgeInsets.all(8.0),
-                                  child: Text(
-                                    "MON, OCT 31",
-                                    style: TextStyle(
-                                      fontFamily: "Poppins-Regular",
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              Text(
-                                "₹ 5,768",
-                                style: TextStyle(
-                                    fontFamily: "Poppins-Regular",
-                                    color: Colors.red
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
+            // Container(
+            //   height: 0.09*queryData.size.height,
+            //   decoration: BoxDecoration(
+            //     borderRadius: BorderRadius.circular(18),
+            //     color: Colors.white,
+            //   ),
+            //   child: Row(
+            //     mainAxisAlignment: MainAxisAlignment.spaceAround,
+            //     children: [
+            //       Expanded(
+            //         child: Padding(
+            //           padding: const EdgeInsets.all(8.0),
+            //           child: Container(
+            //             decoration: BoxDecoration(
+            //               borderRadius: BorderRadius.circular(30),
+            //               color: Colors.lightBlue[100],
+            //             ),
+            //             child: const Center(
+            //               child: Column(
+            //                 mainAxisAlignment: MainAxisAlignment.center,
+            //                 children: [
+            //                   Expanded(
+            //                     child: Padding(
+            //                       padding: EdgeInsets.all(8.0),
+            //                       child: Text(
+            //                         "MON, OCT 30",
+            //                         style: TextStyle(
+            //                           fontFamily: "Poppins-Regular",
+            //                         ),
+            //                       ),
+            //                     ),
+            //                   ),
+            //                   Text(
+            //                     "₹ 4,808",
+            //                     style: TextStyle(
+            //                       fontFamily: "Poppins-Regular",
+            //                       color: Colors.red
+            //                     ),
+            //                   ),
+            //                 ],
+            //               ),
+            //             ),
+            //           ),
+            //         ),
+            //       ),
+            //       Expanded(
+            //         child: Padding(
+            //           padding: const EdgeInsets.all(8.0),
+            //           child: Container(
+            //             decoration: BoxDecoration(
+            //               borderRadius: BorderRadius.circular(30),
+            //               color: Colors.lightBlue[100],
+            //             ),
+            //             child: Center(
+            //               child: Column(
+            //                 mainAxisAlignment: MainAxisAlignment.center,
+            //                 children: [
+            //                   const Expanded(
+            //                     child: Padding(
+            //                       padding: EdgeInsets.all(8.0),
+            //                       child: Text(
+            //                         "MON, OCT 29",
+            //                         style: TextStyle(
+            //                           fontFamily: "Poppins-Regular",
+            //                         ),
+            //                       ),
+            //                     ),
+            //                   ),
+            //                   Text(
+            //                     "₹ 4,768",
+            //                     style: TextStyle(
+            //                         fontFamily: "Poppins-Regular",
+            //                         color: Colors.green[800],
+            //                     ),
+            //                   ),
+            //                 ],
+            //               ),
+            //             ),
+            //           ),
+            //         ),
+            //       ),
+            //       Expanded(
+            //         child: Padding(
+            //           padding: const EdgeInsets.all(8.0),
+            //           child: Container(
+            //             decoration: BoxDecoration(
+            //               borderRadius: BorderRadius.circular(30),
+            //               color: Colors.lightBlue[100],
+            //             ),
+            //             child: const Center(
+            //               child: Column(
+            //                 mainAxisAlignment: MainAxisAlignment.center,
+            //                 children: [
+            //                   Expanded(
+            //                     child: Padding(
+            //                       padding: EdgeInsets.all(8.0),
+            //                       child: Text(
+            //                         "MON, OCT 31",
+            //                         style: TextStyle(
+            //                           fontFamily: "Poppins-Regular",
+            //                         ),
+            //                       ),
+            //                     ),
+            //                   ),
+            //                   Text(
+            //                     "₹ 5,768",
+            //                     style: TextStyle(
+            //                         fontFamily: "Poppins-Regular",
+            //                         color: Colors.red
+            //                     ),
+            //                   ),
+            //                 ],
+            //               ),
+            //             ),
+            //           ),
+            //         ),
+            //       ),
+            //     ],
+            //   ),
+            // ),
             const SizedBox(height: 8),
             // Expanded(
             //   child: flights[from.text] != null ? ListView(
@@ -1099,12 +1111,12 @@ class _FlightsState extends State<Flights> {
               )
             ],
 
-            Expanded(
-              child: Container(
-                width: queryData.size.width*0.8,
-                  child: Center(child: Text("$flightData"))
-              ),
-            ),
+            // Expanded(
+            //   child: Container(
+            //     width: queryData.size.width*0.8,
+            //       child: Center(child: Text("$flightData"))
+            //   ),
+            // ),
             Expanded(
               child: ListView.builder(
                 itemCount: flightsData.length,
@@ -1231,6 +1243,7 @@ class _FlightsState extends State<Flights> {
   Avaition apiService = Avaition('87afb06edeb00b82d2f48951a0570cd5');
 
 
+
   Future<void> fetchData(dep,arr) async {
     final response = await apiService.fetchData(dep,arr);
 
@@ -1270,5 +1283,19 @@ class _FlightsState extends State<Flights> {
 
 
 
+class Avaition {
+  final String apiKey;
+  final String baseUrl = 'http://api.aviationstack.com/v1';
 
+  Avaition(this.apiKey);
+
+  Future<http.Response> fetchData(dep,arr) async {
+    final response = await http.get(
+      Uri.parse('$baseUrl/flights?access_key=87afb06edeb00b82d2f48951a0570cd5&dep_iata=$dep&arr_iata=$arr'),
+      headers: {'Authorization': 'Bearer $apiKey'},
+    );
+
+    return response;
+  }
+}
 

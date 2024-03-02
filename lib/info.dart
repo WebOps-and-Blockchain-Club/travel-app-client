@@ -144,21 +144,7 @@ class _AwesomeDropdownExampleState extends State<AwesomeDropdownExample> {
   }
 }
 
-class Avaition {
-  final String apiKey;
-  final String baseUrl = 'http://api.aviationstack.com/v1';
 
-  Avaition(this.apiKey);
-
-  Future<http.Response> fetchData(dep,arr) async {
-    final response = await http.get(
-      Uri.parse('$baseUrl/flights?access_key=87afb06edeb00b82d2f48951a0570cd5&dep_iata=$dep&arr_iata=$arr'),
-      headers: {'Authorization': 'Bearer $apiKey'},
-    );
-
-    return response;
-  }
-}
 
 
 
