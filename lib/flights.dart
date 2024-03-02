@@ -4,10 +4,11 @@ import 'package:intl/intl.dart';
 import 'package:travel_app_client/info.dart';
 import 'package:travel_app_client/models/flights.dart';
 import 'package:http/http.dart' as http;
+import 'package:travel_app_client/search.dart';
 import 'cards/flight-card.dart';
 
 
-List graph = [];
+
 
 
 class Flights extends StatefulWidget {
