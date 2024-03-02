@@ -67,8 +67,14 @@ class _MyAppHomeState extends State<MyAppHome> {
               items: [
                 const BottomNavigationBarItem(
                     label: "", icon: Icon(Icons.home)),
-                const BottomNavigationBarItem(
-                    label: "", icon: Icon(Icons.search)),
+                BottomNavigationBarItem(
+                    label: "",
+                    icon: IconButton(
+                        onPressed: () {
+                          print('pressed');
+                          Navigator.pushNamed(context, '/search');
+                        },
+                        icon: Icon(Icons.account_box_rounded))),
                 BottomNavigationBarItem(
                     label: "",
                     icon: IconButton(
@@ -345,28 +351,58 @@ class _MyAppHomeState extends State<MyAppHome> {
                               ),
                             ),
                           ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
                           Padding(
-                              padding: const EdgeInsets.all(20.0),
-                              child: Row(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.all(10.0),
-                                    child: Image(
-                                      image: AssetImage(
-                                          "assets/images/roadways.jpg"),
-                                      height: 75,
-                                      width: 75,
+                            padding: const EdgeInsets.all(10.0),
+                            child: GestureDetector(
+                              onTap: () async {
+                                await simulateLoading();
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => isLoading
+                                            ? LoadingPage()
+                                            : SecondRoute()));
+                              },
+                              child: Container(
+                                height: 150,
+                                width: 150,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(10),
+                                  shape: BoxShape.rectangle,
+                                ),
+                                child: Column(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.all(10.0),
+                                      child: Image(
+                                        image: AssetImage(
+                                            "assets/images/airways.jpg"),
+                                        height: 75,
+                                        width: 75,
+                                      ),
                                     ),
-                                  ),
-                                  Text(
-                                    "Search Optimal Routes",
-                                    style: TextStyle(
-                                        color: Colors.red,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 20),
-                                  )
-                                ],
-                              ))
+                                    Text(
+                                      "Search Routes",
+                                      style: TextStyle(
+                                          color: Colors.red,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 20),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
                         ],
                       ),
                     ),

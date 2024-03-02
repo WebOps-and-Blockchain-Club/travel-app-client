@@ -5,6 +5,7 @@ import 'package:travel_app_client/Screens/Welcome/welcome_screen.dart';
 import 'package:travel_app_client/UserProvider.dart';
 import 'package:travel_app_client/constants.dart';
 import 'package:travel_app_client/profile.dart';
+import 'package:travel_app_client/search.dart';
 import 'viewprofile.dart';
 import 'home.dart';
 import '';
@@ -28,7 +29,8 @@ class MyApp extends StatelessWidget {
       routes: {
         '/home': (context) => MyAppHome(),
         '/profile': (context) => viewProfile(),
-        '/editprofile': (context) => Profile()
+        '/editprofile': (context) => Profile(),
+        '/search': (context) => Search()
       },
       theme: ThemeData(
           primaryColor: kPrimaryColor,
