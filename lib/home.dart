@@ -344,10 +344,32 @@ class _MyAppHomeState extends State<MyAppHome> {
                                 ),
                               ),
                             ),
-                          )
+                          ),
+                          Padding(
+                              padding: const EdgeInsets.all(20.0),
+                              child: Row(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(10.0),
+                                    child: Image(
+                                      image: AssetImage(
+                                          "assets/images/roadways.jpg"),
+                                      height: 75,
+                                      width: 75,
+                                    ),
+                                  ),
+                                  Text(
+                                    "Search Optimal Routes",
+                                    style: TextStyle(
+                                        color: Colors.red,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20),
+                                  )
+                                ],
+                              ))
                         ],
                       ),
-                    )
+                    ),
                   ],
                 ),
               ),
