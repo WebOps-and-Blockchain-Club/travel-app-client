@@ -184,7 +184,7 @@ class _FlightsState extends State<Flights> {
   }
 
 
-  Future<String> getDistance(String start, String end) async {
+  Future<String> getAirportDistance(String start, String end) async {
 
     final response = await http.get(
       Uri.parse('https://router.project-osrm.org/route/v1/driving/$start;$end?steps=true'),
@@ -319,7 +319,7 @@ class _FlightsState extends State<Flights> {
 
         for (int i = 0; i < data["best_flights"].length; i++){
 
-          String distance = await getDistance(
+          String distance = await getAirportDistance(
               await getAirportCoordinates(
                   data["best_flights"][i]["flights"][0]["departure_airport"]["id"]
               ),
@@ -348,7 +348,7 @@ class _FlightsState extends State<Flights> {
 
         for (int i = 0; i < data["other_flights"].length; i++){
 
-          String distance = await getDistance(
+          String distance = await getAirportDistance(
               await getAirportCoordinates(
                   data["other_flights"][i]["flights"][0]["departure_airport"]["id"]
               ),
@@ -1262,6 +1262,7 @@ class _FlightsState extends State<Flights> {
   }
 
 }
+
 
 
 

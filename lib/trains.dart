@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:travel_app_client/search.dart';
 
 import 'flights.dart';
 
@@ -43,9 +44,11 @@ class _GetTrainsState extends State<GetTrains> {
       final response = await http.get(
         Uri.parse('http://indian-railway-api.cyclic.app/trains/gettrainon?from=$start&to=$end&date=31-01-2024'),
         headers: <String, String>{
+          "Access-Control-Allow-Origin": "*",
           'Content-Type': 'application/json; charset=UTF-8',
-          'Access-Control-Allow-Origin': '*'
-        },);
+        }
+
+        ,);
 
       // final data = json.decode(response.body);
       //
@@ -70,14 +73,15 @@ class _GetTrainsState extends State<GetTrains> {
 
         for (int i = 0; i < data["data"].length; i++){
 
-          double distance = await getDistance(
-              await getStationCoordinates2(
-                data["data"][i]["train_base"]["from_stn_code"]
-              ),
-              await getStationCoordinates2(
-                  data["data"][i]["train_base"]["to_stn_code"]
-              )
-          );
+          String distance = await getDistance(data["data"][i]["train_base"]["from_stn_code"], data["data"][i]["train_base"]["to_stn_code"]);
+          // double distance = await getDistance(
+          //     await getStationCoordinates2(
+          //       data["data"][i]["train_base"]["from_stn_code"]
+          //     ),
+          //     await getStationCoordinates2(
+          //         data["data"][i]["train_base"]["to_stn_code"]
+          //     )
+          // );
 
           // String distance = await getDistance(
           //     await getAirportCoordinates(
@@ -101,7 +105,8 @@ class _GetTrainsState extends State<GetTrains> {
                 "from_time":data["data"][i]["train_base"]["from_time"],
                 "to_time":data["data"][i]["train_base"]["to_time"],
                 "travel_time":data["data"][i]["train_base"]["travel_time"],
-                "distance": "$distance"
+                "distance": distance,
+                "mode": "railway"
 
 
                 // 'fromId': data["other_flights"][i]["flights"][0]["departure_airport"]["id"],
@@ -168,34 +173,62 @@ class _GetTrainsState extends State<GetTrains> {
 
 
 
-  Future<void> getFare(start, end, trainNo) async {
-    final Uri url = Uri.parse('https://irctc1.p.rapidapi.com/api/v2/getFare');
 
-    final Map<String, String> headers = {
-      'X-RapidAPI-Key': 'cd988d1ba3msh80e5cc1cdf2241ep16817ajsn5d06bd5f5e06',
-      'X-RapidAPI-Host': 'irctc1.p.rapidapi.com',
-    };
 
-    final Map<String, String> params = {
-      'trainNo': trainNo,
-      'fromStationCode': start,
-      'toStationCode': end,
-    };
+
+
+
+  Future<String> getDistance(start, end) async {
+    final apiKey = "ffa7bbd869cbd84e84c77d80b8d322fc9caaf5fbabb10eb171e9e256fa6b71a9";
+    final engine = "google_maps_directions";
+    final hl = "en";
+    final q = "Coffee";
+    final gl = "in";
+    final startAddr = "$start railway  station";
+    final endAddr = "$end railway station";
+    final travelMode = "6";
+    final distanceUnit = "0";
+
+    // final url = Uri.parse("https://serpapi.com/search.json?api_key=$apiKey&engine=$engine&hl=$hl&q=$q&gl=$gl&start_addr=$startAddr&end_addr=$endAddr&travel_mode=$travelMode&distance_unit=$distanceUnit");
+
 
     try {
-      final response = await http.get(url.replace(queryParameters: params), headers: headers);
+      final response = await http.get(
+          Uri.parse("https://serpapi.com/search.json?api_key=$apiKey&engine=$engine&hl=$hl&q=$q&gl=$gl&start_addr=$startAddr&end_addr=$endAddr&travel_mode=$travelMode&distance_unit=$distanceUnit"));
 
-      final data = json.decode(response.body);
-
-
-      print(data["data"]);
-
-
+      if (response.statusCode == 200) {
+        final responseData = json.decode(response.body);
+        if (responseData.length > 0) {
+          // final lat = double.parse(responseData[0]['lat']);
+          // final lon = double.parse(responseData[0]['lon']);
+          print("ehre");
+          print(responseData["directions"][0]["distance"]);
+          return "${responseData["directions"][0]["distance"]}";
+        } else {
+          throw Exception('Station not found');
+        }
+      } else {
+        throw Exception('Failed to fetch data');
+      }
     } catch (error) {
-      print(error);
+      throw Exception('Error fetching station coordinates: $error');
     }
-  }
 
+    // http.get(url).then((response) {
+    //   if (response.statusCode == 200) {
+    //     // var json = jsonDecode(response.body);
+    //     final data = json.decode(response.body);
+    //     print("distance data : $data");
+    //     return "";
+    //   } else {
+    //     print('Request failed with status: ${response.statusCode}.');
+    //     return "2";
+    //   }
+    // }).catchError((error) {
+    //   print('Request failed with error: $error.');
+    //   return "3";
+    // });
+  }
 
 
   @override
@@ -345,33 +378,33 @@ out center;
 
 }
 
-Future<double> getDistance(Map<String, double> start, Map<String, double> end) async {
-  try {
-    final response = await http.post(
-        Uri.parse(
-            'https://api.openrouteservice.org/v2/directions/driving-car'),
-      body: '{ "coordinates":[ [${start["lat"]}, ${start["lon"]}] , [${end["lat"]}, ${end["lon"]}]] }',
-        headers: {
-          'Accept': 'application/json, application/geo+json, application/gpx+xml, img/png; charset=utf-8',
-          'Authorization': '5b3ce3597851110001cf6248b9d3188fefa440ea82a92fbdc0e2ec33',
-          'Content-Type': 'application/json; charset=utf-8'
-        }
-    );
-
-    if (response.statusCode == 200) {
-      final responseData = json.decode(response.body);
-      final distanceInMeters = responseData['features'][0]['properties']['summary']['distance'];
-      final distanceInKilometers = distanceInMeters / 1000;
-
-      return distanceInKilometers;
-    } else {
-      throw Exception('Failed to fetch data');
-    }
-  } catch (error) {
-    print('Error calculating distance: $error');
-    throw error;
-  }
-}
+// Future<double> getDistance(Map<String, double> start, Map<String, double> end) async {
+//   try {
+//     final response = await http.post(
+//         Uri.parse(
+//             'https://api.openrouteservice.org/v2/directions/driving-car'),
+//       body: '{ "coordinates":[ [${start["lat"]}, ${start["lon"]}] , [${end["lat"]}, ${end["lon"]}]] }',
+//         headers: {
+//           'Accept': 'application/json, application/geo+json, application/gpx+xml, img/png; charset=utf-8',
+//           'Authorization': '5b3ce3597851110001cf6248b9d3188fefa440ea82a92fbdc0e2ec33',
+//           'Content-Type': 'application/json; charset=utf-8'
+//         }
+//     );
+//
+//     if (response.statusCode == 200) {
+//       final responseData = json.decode(response.body);
+//       final distanceInMeters = responseData['features'][0]['properties']['summary']['distance'];
+//       final distanceInKilometers = distanceInMeters / 1000;
+//
+//       return distanceInKilometers;
+//     } else {
+//       throw Exception('Failed to fetch data');
+//     }
+//   } catch (error) {
+//     print('Error calculating distance: $error');
+//     throw error;
+//   }
+// }
 
 // Example usage:
 // void main() async {
@@ -390,34 +423,3 @@ Future<double> getDistance(Map<String, double> start, Map<String, double> end) a
 List trains = [];
 
 
-Future<void> sendGraph(graph) async {
-  String url = 'http://localhost:3000/getroute';
-
-
-
-  Map<String, dynamic> requestBody = {
-    'graph': graph
-  };
-
-  try {
-    final response = await http.post(
-      Uri.parse(url),
-      body: jsonEncode(requestBody),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-        'Access-Control-Allow-Origin': '*'
-      },
-    );
-
-    if (response.statusCode == 200) {
-      print('POST request successful');
-      print('Response: ${response.body}');
-    }
-    else {
-      print('POST request failed with status: ${response.statusCode}');
-      print('Response: ${response.body}');
-    }
-  } catch (e) {
-    print('Error sending POST request: $e');
-  }
-}

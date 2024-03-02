@@ -1,7 +1,9 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:travel_app_client/path.dart';
 import 'package:travel_app_client/route.dart';
+import 'package:travel_app_client/search.dart';
 import 'package:travel_app_client/trains.dart';
 
 import 'flights.dart';
@@ -57,7 +59,9 @@ class MyApp extends StatelessWidget {
       // home: FlightCoordinates(),
       // home: TrainCoordinates(),
       // home: GetDistance(),
-      home: GetTrains(),
+      // home: GetTrains(),
+      // home: PathOutput(),
+      home: const Search(),
     );
   }
 }
