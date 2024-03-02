@@ -40,23 +40,17 @@ class _MyAppHomeState extends State<MyAppHome> {
 
   fetchData() async {
     try {
-      final response = await httpService.getRequest('/viewprofile');
+      final data = await httpService.getRequest('/viewprofile');
       print('fetching details in home.dart using viewprofile');
       //  headers: {
       //   "Content-Type": "application/json",
       //   HttpHeaders.authorizationHeader.toString():
       //       (await storage.read(key: 'token')).toString()
       // });
-      if (response.statusCode == 200) {
-        final data = json.decode(response.body);
-        print('data:$data');
-        setState(() {
-          name = data['name'];
-        });
-      } else {
-        // Handle errors if any
-        print('Error: ${response.body}');
-      }
+
+      setState(() {
+        name = data['name'];
+      });
     } catch (error) {
       // Handle general errors
       print('Error: $error');

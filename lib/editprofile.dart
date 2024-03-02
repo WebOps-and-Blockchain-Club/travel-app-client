@@ -44,7 +44,7 @@ class ProfilePage3 extends StatelessWidget {
     final HttpService httpService = HttpService();
 
     try {
-      final response = await httpService.postRequest('/update', {
+      final data = await httpService.postRequest('/update', {
         'name': nameController.text,
         'nationality': nationalityController.text,
         'city': cityController.text,
@@ -57,18 +57,11 @@ class ProfilePage3 extends StatelessWidget {
       });
 
       // final response1 = await http.get(url);
-      if (response.statusCode == 200) {
-        // Data successfully sent to the backend
-        // Handle success accordingly
-        // print("Data updated successfully");
-        final data = jsonDecode(response.body);
-        // await storage.setItem('token', data['token']);
-        // await storage.getItem('token');
-      } else {
-        // Handle errors if any
-        print("Error encountered in editprofile.drt");
-        print("Error: ${response.body}");
-      }
+      // Data successfully sent to the backend
+      // Handle success accordingly
+      // print("Data updated successfully");
+      // await storage.setItem('token', data['token']);
+      // await storage.getItem('token');
     } catch (error) {
       // Handle general errors
       print("Error: $error");

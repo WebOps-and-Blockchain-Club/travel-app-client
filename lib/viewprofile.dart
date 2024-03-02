@@ -53,29 +53,23 @@ class _view_profileState extends State<view_profile> {
   fetchData() async {
     print('hreeeee');
     try {
-      final response = await httpService.getRequest('/viewprofile');
+      final data = await httpService.getRequest('/viewprofile');
       print('entered viewprofile');
       //headers: {
       //   "Content-Type": "application/json",
       //   HttpHeaders.authorizationHeader.toString():
       //       await storage.read(key: 'token').toString()
       // });
-      if (response.statusCode == 200) {
-        final data = json.decode(response.body);
-        print(data);
-        setState(() {
-          name = data['name'];
-          email = data['email'];
-          nationality = data['nationality'];
-          state = data['state'];
-          city = data['city'];
-          address = data['address'];
-          phoneNumber = data['phone_number'];
-        });
-      } else {
-        // Handle errors if any
-        print('Error: ${response.body}');
-      }
+
+      setState(() {
+        name = data['name'];
+        email = data['email'];
+        nationality = data['nationality'];
+        state = data['state'];
+        city = data['city'];
+        address = data['address'];
+        phoneNumber = data['phone_number'];
+      });
     } catch (error) {
       // Handle general errors
       print('Error: $error');
