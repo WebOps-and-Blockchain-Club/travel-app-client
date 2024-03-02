@@ -1,6 +1,10 @@
 import 'dart:convert';
 
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:travel_app_client/search.dart';
 import 'package:http/http.dart' as http;
 import 'package:travel_app_client/search.dart';
 
@@ -10,6 +14,7 @@ import 'package:travel_app_client/search.dart';
 
 Map<String, dynamic> data = {};
 // List<List> path = [];
+List<List> path = [[ "place1", "place2", "air",36005, 15000], ["place2", "place3", "air",36005, 15000], ["place3", "place4","rail",36005,15000]];
 
 class PathOutput extends StatelessWidget {
   const PathOutput({super.key});
@@ -21,6 +26,7 @@ class PathOutput extends StatelessWidget {
       home: Scaffold(
         appBar: AppBar(
           title: const Text('Route Overview'),
+          // title: const Text('Route Overview'),
           centerTitle: true,
         ),
         body: Page(),
@@ -118,7 +124,93 @@ class Page extends StatelessWidget {
   }
 }
 
+class WaypointLine extends StatefulWidget {
+  final String text;
+  final IconData icon;
+  final IconData transport;
+  double price;
+  double distance;
 
+  WaypointLine({super.key, required this.text, required this.icon, required this.transport, this.price = 0, this.distance = 100});
+
+  @override
+  State<WaypointLine> createState() => _WaypointLineState();
+}
+
+class _WaypointLineState extends State<WaypointLine> {
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+        padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
+        child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Container(
+                    height: 30,
+                    width: 30,
+                    decoration: const BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.blue, // Color of the circle icon
+                    ),
+                    child: Icon(widget.icon, size: 24, color: Colors.white),
+                  ),
+                  const SizedBox(width: 10),
+                  Text(
+                    widget.text,
+                    style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  const SizedBox(
+                    width: 14,
+                  ),
+                  Container(
+                    width: 02,
+                    height: 50,
+                    color: Colors.blue,
+                  ),
+                  const SizedBox(width: 20),
+                  Icon(widget.transport),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(18, 8, 8, 8),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(12),
+                          child: Text(
+                            "₹${widget.price}",
+                            style: TextStyle(
+                              fontSize: 20,
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(12),
+                          child: Text(
+                            "${widget.distance} metres",
+                            style: TextStyle(
+                              fontSize: 15,
+                            ),
+                          ),
+                        ),
+
+                      ],
+                    ),
+                  )
+                ],
+              )
+            ],
+            ),
+        );
+    }
+}
 
 Future<double> getDistance(start, end) async {
 
