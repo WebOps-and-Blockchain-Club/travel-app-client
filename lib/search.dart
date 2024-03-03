@@ -7,8 +7,11 @@ import 'package:intl/intl.dart';
 // import 'package:travel_app_client/path.dart';
 // import 'package:travel_app_client/trains.dart';
 
+bool upar = false;
 // import 'flights.dart';
-List<List> path = [[ "place1", "place2", "air",36005, 15000], ["place2", "place3", "air",36005, 15000], ["place3", "place4","rail",36005,15000]];
+List<List> path_price = [[ "Chennai", "MGR Chennai Central", "car",20, 346], ["MGR chennai central", "Nizamuddin Railway Station", "rail",2200, 1250], ["Nizamuddin Railway Station", "Delhi","car",30,527]];
+List<List> path2_time = [[ "Chennai", "Chennai International Airport", "car",20, 463], ["Chennai International Airport", "Mumbai International Airport", "air",1335.3,3966 ], ["Mumbai International Airport", "Indira Gandhi International Airport","air",1148,4583],[ "Indira Gandhi International Airport", "Delhi", "car",20, 463]];
+List<List> path3_distance = [[ "Chennai", "Chennai International Airport", "car",20, 463], ["MGR chennai centralChennai International Airport", "Indira Gandhi International Airport", "air",2200, 5913], ["Indira Gandhi International Airport", "Delhi","car",20,527]];
 
 List graph = [];
 
@@ -216,6 +219,9 @@ class _SearchState extends State<Search> {
                 Center(
                   child: ElevatedButton(
                     onPressed: () async {
+                      setState(() {
+                        upar = !upar;
+                      });
                       start_airport = await getAirportCode(start.text);
                       end_airport = await getAirportCode(end.text);
                       start_railway = await getStationCode(start.text);
@@ -242,14 +248,14 @@ class _SearchState extends State<Search> {
               ],
             ),
           ),
-          Center(
+          upar == true ? Center(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   // children: data.keys.map((e) => WaypointLine(text: e[0], icon: (e[0] == start.text || e[0] == end.text) ? Icons.flag : Icons.change_circle, transport: e[2] == "air" ? Icons.airplanemode_active_rounded : (e[2] == "train" ? Icons.train : Icons.directions_walk))).toList(),
-                  children: path.map((e) => WaypointLine(text: e[0], icon: (e[0] == "place1" ) ? Icons.flag : Icons.change_circle, transport: e[2] == "air" ? Icons.airplanemode_active_rounded : (e[2] == "rail" ? Icons.train : Icons.directions_walk), distance: e[3],price: e[4],)).toList(),
+                  children: (dropdownValue == "cost" ? path_price : (dropdownValue == "distance" ? path3_distance : path2_time)).map((e) => WaypointLine(text: e[0], icon: (e[0] == "place1" ) ? Icons.flag : Icons.change_circle, transport: e[2] == "air" ? Icons.airplanemode_active_rounded : (e[2] == "rail" ? Icons.train : (e[2] == "car" ? Icons.car_rental_rounded: Icons.directions_walk)), distance: e[3],price: e[4],)).toList(),
                   // children: [
                   //   WaypointLine(
                   //     text: 'Start',
@@ -311,7 +317,7 @@ class _SearchState extends State<Search> {
                       ),
                       SizedBox(width: 10),
                       Text(
-                        path[path.length - 1][1],
+                        path_price[path_price.length - 1][1],
                         style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold
@@ -323,7 +329,7 @@ class _SearchState extends State<Search> {
                 SizedBox(height: 30),
               ],
             ),
-          ),
+          ) : Container(),
 
         ],
       ),
@@ -402,7 +408,7 @@ class _WaypointLineState extends State<WaypointLine> {
                     Padding(
                       padding: const EdgeInsets.all(12),
                       child: Text(
-                        "${widget.distance} metres",
+                        "${widget.distance} kilo-metres",
                         style: TextStyle(
                           fontSize: 15,
                         ),
